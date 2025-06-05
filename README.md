@@ -5,23 +5,6 @@ This project implements a **Facial Emotion Recognition (FER)** system using a Co
 
 ---
 
-## 📁 Project Structure
-
-```
-Emotion_Recognition/
-│
-├── models/                    # Trained model storage
-│   └── fer_vggnet_model.h5
-├── FER-2013_5e/               # Dataset root directory
-│   ├── train/
-│   ├── val/
-│   └── test/
-├── emotion_recognition.py    # Main training script
-└── README.md                 # Project documentation
-```
-
----
-
 ## 🧠 Model Architecture
 
 The system uses a **custom CNN** based on the VGG-16 architecture, featuring:
