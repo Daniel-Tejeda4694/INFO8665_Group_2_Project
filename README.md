@@ -92,7 +92,7 @@ After training, the script:
 
 Example output:
 ```
-Test Accuracy: 0.8235
+Test Accuracy: 0.7558
 ```
 
 ---
