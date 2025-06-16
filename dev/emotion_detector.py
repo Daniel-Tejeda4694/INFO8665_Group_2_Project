@@ -9,6 +9,9 @@ from PIL import Image
 model = load_model("../training/fer_vggnet_model.h5")
 class_names = ['Angry', 'Happy', 'Neutral', 'Sad', 'Surprise']
 emoji_path = "../documentation/emojis/"
+
+SHOW_LABELS = False  # Set to True for testing later
+
 mp_face = mp.solutions.face_detection
 detector = mp_face.FaceDetection(model_selection=0, min_detection_confidence=0.5)
 
@@ -42,11 +45,12 @@ def detect_emotion_with_overlay(frame, emotion_history):
 
             final_label = Counter(emotion_history).most_common(1)[0][0]
 
-            # Draw label and confidence
-            label_text = f"{final_label} ({conf * 100:.1f}%)"
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            cv2.putText(frame, label_text, (x1, y1 - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+            if SHOW_LABELS:
+                # Draw label and confidence
+                label_text = f"{final_label} ({conf * 100:.1f}%)"
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                cv2.putText(frame, label_text, (x1, y1 - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
             # Draw emoji next to face
             try:
