@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import GlassPanel from "@/components/ui/GlassPanel";
 
 import { useEffect, useRef, useState } from "react";
 import {
@@ -8,6 +9,7 @@ import {
   FaVideo,
   FaVideoSlash,
 } from "react-icons/fa";
+import PrimaryButton from "../ui/PrimaryButton";
 
 type Participant = {
   id: string;
@@ -76,54 +78,45 @@ export default function VideoFeed() {
   }, []);
 
   return (
-    <div className="flex relative h-full">
+    <GlassPanel className="absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
       <div className="flex flex-col gap-2 w-full relative h-full rounded-lg items-center justify-between">
         <div className="flex min-h-0 justify-center w-full h-full">
-          <div className="bg-gray-300 relative h-full max-h-full max-w-full flex items-center justify-center rounded-4xl aspect-video">
+          <div className="bg-[#2B3E51] relative h-full max-h-full max-w-full flex items-center justify-center rounded-xl aspect-video">
             {streaming ? (
               <img
                 key={Date.now()}
                 ref={imgRef}
                 src={`http://localhost:5000/video_feed?${Date.now()}`}
                 alt="Camera Stream"
-                className="w-full h-full object-cover rounded-4xl"
+                className="w-full h-full object-cover rounded-xl"
               />
             ) : (
               <div className="text-white text-4xl">
-                <div className="flex justify-center items-center bg-amber-900 rounded-full w-30 h-30">
+                <div className="flex justify-center items-center bg-[#4178BC]/80 rounded-full w-30 h-30">
                   M
                 </div>
               </div>
             )}
-            <div className="flex absolute top-3 left-3 bg-gray-500/70 text-white text-xl p-1 rounded-4xl items-center">
-              <div className="flex justify-center items-center bg-amber-900 rounded-full w-10 h-10 mr-2">
-                M
-              </div>
-              <div className="mr-3">You</div>
+            <div className="flex absolute top-0 left-0 bg-[#4178BC]/50 text-xl p-1 rounded-tl-xl rounded-br-xl items-center">
+              <div className="mx-2">You</div>
             </div>
 
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 text-white">
-              <button
-                onClick={() => setAudioEnabled(!audioEnabled)}
-                className="flex items-center justify-center bg-gray-500/70 p-4 rounded-full hover:bg-gray-500/60 hover:cursor-pointer"
-              >
+              <PrimaryButton onClick={() => setAudioEnabled(!audioEnabled)}>
                 {audioEnabled ? (
                   <FaMicrophone size={20} />
                 ) : (
                   <FaMicrophoneSlash size={20} color="#ff007f" />
                 )}
-              </button>
+              </PrimaryButton>
 
-              <button
-                onClick={() => setVideoEnabled((prev) => !prev)}
-                className="flex items-center justify-center bg-gray-500/70 p-4 rounded-full hover:bg-gray-500/60 hover:cursor-pointer"
-              >
+              <PrimaryButton onClick={() => setVideoEnabled((prev) => !prev)}>
                 {videoEnabled ? (
                   <FaVideo size={20} />
                 ) : (
                   <FaVideoSlash size={20} color="#ff007f" />
                 )}
-              </button>
+              </PrimaryButton>
             </div>
           </div>
         </div>
@@ -166,6 +159,6 @@ export default function VideoFeed() {
           ))}
         </div>
       </div>
-    </div>
+    </GlassPanel>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
-import ParlaLogo from "@/components/home/ParlaLogo";
+import ParlaLogo from "@/components/home/ParlaLogo"; //  Import logo component
+
 import { useState } from "react";
 
 import { FaUserPlus } from "react-icons/fa";
+import PrimaryButton from "../ui/PrimaryButton";
 
 export default function MeetingHeader() {
   const [copied, setCopied] = useState(false);
@@ -17,19 +19,16 @@ export default function MeetingHeader() {
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center space-x-2">
-        <button className="hover:cursor-pointer">
-          <ParlaLogo />
-        </button>
+        <ParlaLogo />
       </div>
-      <button
-        onClick={handleCopy}
-        className="flex items-center justify-center bg-gray-400 rounded-full px-5 py-2 hover:bg-gray-400/70 hover:cursor-pointer text-white"
-      >
-        <FaUserPlus size={20} />
-        <span className="text-sm ml-2">
-          {copied ? "Copied invite link" : "Copy invite link"}
-        </span>
-      </button>
+      <div className="m-5">
+        <PrimaryButton onClick={handleCopy}>
+          <FaUserPlus size={20} />
+          <span className="text-sm ml-2">
+            {copied ? "Copied invite link" : "Copy invite link"}
+          </span>
+        </PrimaryButton>
+      </div>
     </div>
   );
 }

@@ -23,13 +23,14 @@ export default function MeetingPage() {
   // };
 
   return (
-    <div className="flex h-screen w-full bg-gray-100">
-      <div className="flex-1 p-4 flex flex-col">
-        <div>Room: {roomId} </div>
-        <MeetingHeader />
-        <VideoFeed />
-      </div>
-    </div>
+    <main className="min-h-screen">
+      <MeetingHeader />
+      {/* <div className="flex relative ml-20 text-2xl  flex-1 text-black">
+          {" "}
+          Room: {roomId}{" "}
+        </div> */}
+      <VideoFeed />
+    </main>
     // <main className="min-h-screen flex flex-col items-center justify-center text-center p-8 bg-gray-50">
     //   <Head>
     //     <title>Parla Emotion Detection</title>
