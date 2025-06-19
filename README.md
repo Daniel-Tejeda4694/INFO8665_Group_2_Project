@@ -33,17 +33,27 @@ The system is trained to detect the following emotions:
 - 😢 Sad
 - 😮 Surprise
 
+_*Disgust and Fear were removed from the original dataset*_
 ---
 
 ## 🚀 How to Run
 
 ### 1. Setup Environment
 
-Install dependencies:
+Install dependencies (file in `documentation/setup` directory):
 
 ```bash
-pip install tensorflow opencv-python numpy pandas matplotlib seaborn scikit-learn pillow
+pip install -r requirements_training.txt
 ```
+
+**Requirements:**
+
+- Python 3.10 (recommended)
+- TensorFlow 2.10.1
+- OpenCV
+- NumPy
+- Matplotlib, Seaborn
+- Scikit-learn
 
 ### 2. Prepare Dataset
 
@@ -60,46 +70,43 @@ Each folder should contain subdirectories named after the classes, each with gra
 
 ### 3. Train the Model
 
-Update the `basic_path` in the script if needed:
+Update the `basic_path` in the notebook if needed:
 
 ```python
 config = {
-    "basic_path" : "path/to/FER-2013_5e/",
+    "basic_path" : "path/to/data-collection/FER-2013_5e/",
     ...
 }
 ```
 
-Run the script:
+Run the notebook (file in `dev` directory):
 
 ```bash
-python emotion_recognition.py
+pip install jupyter
+jupyter notebook VGGnet_FER_5e.ipynb
 ```
 
-Model checkpoints and final model will be saved under the `models/` directory.
+Final model will be saved under the `training/` directory.
 
 ---
 
-## 📊 Output
+## 📊 Evaluation and Results
 
-After training, the script:
+Metrics used:
+
+- **Accuracy history** (train, validation)
+- **Loss history** (train, validation)
+- **Accuracy**, **Loss**, **Confusion Matrix**, **F1-Score**, and **Precision/Recall** (test)
+
+After training, the notebook:
 
 - Plots training and validation **accuracy/loss curves**
-- Evaluates model performance on the test set
 - Saves final model to:
   ```
-  models/fer_vggnet_model.h5
+  training/fer_vggnet_model.h5
   ```
-
-Example output:
-```
-Test Accuracy: 0.7558
-```
-
----
-
-## 📈 Visualizations
-
-The script automatically plots training curves using `matplotlib`.
+- Evaluates model performance on the test set
+- Displays test set confusion matrix and classification report
 
 ---
 
@@ -109,46 +116,31 @@ The script automatically plots training curves using `matplotlib`.
 - ✅ Grayscale input support (48x48)
 - ✅ Custom VGG-like CNN
 - ✅ Callback integration: EarlyStopping, ReduceLROnPlateau
-- ✅ Modular design with reusable model builder
-- ✅ Easy customization for new datasets or class labels
-
----
-
-## 🧪 Evaluation Metrics
-
-- **Accuracy** (train, validation, test)
-- **Loss**
-- Future extension: `Confusion Matrix`, `F1-Score`, `Precision/Recall` (via `classification_report`)
-
----
-
-## 📎 Requirements
-
-- Python 3.7+
-- TensorFlow 2.x
-- OpenCV
-- NumPy, Pandas
-- Matplotlib, Seaborn
-- Scikit-learn
-
----
-
-## 📬 Future Work
-
-- Integrate with a **webcam Streamlit UI**
-- Export predictions to a dashboard
-- Add **confusion matrix visualization**
-- Perform real-time inference and deployment on edge devices
+- ✅ Automatic model checkpointing (best weights saved during training)
 
 ---
 
 ## 📚 Acknowledgements
 
-- FER-2013 dataset: [Kaggle](https://www.kaggle.com/datasets/msambare/fer2013)
-- Model inspired by VGGNet (Simonyan & Zisserman, 2015)
+- FER-2013 dataset: [Kaggle](https://www.kaggle.com/datasets/pankaj4321/fer-2013-facial-expression-dataset)
+- Model inspired by VGGNet [(Khaireddin & Chen, 2021)](https://doi.org/10.48550/arxiv.2105.03588)
 
 ---
 
 ## 📝 License
 
-This project is for educational and research use only.
+This project is for educational and research use only. Commercial use requires explicit permission.
+
+---
+
+## 🌐 Related Projects
+
+### **Frontend (Next.js)**
+- **Name**: parla_ui
+- **Description**: Interactive web interface for real-time emotion detection.
+
+### **Backend (Flask API)**
+- **Name**: flask_app
+- **Description**: REST API serving the trained CNN model.
+
+_For additional information, check the README files on `documentation/setup` directory_
