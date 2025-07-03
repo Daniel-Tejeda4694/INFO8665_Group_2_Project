@@ -10,9 +10,9 @@ import pandas as pd
 import base64
 
 # Load model and labels
-model = load_model("./models/fer_vggnet_model.h5")
+model = load_model("../training/fer_vggnet_model.h5")
 class_names = ['Angry', 'Happy', 'Neutral', 'Sad', 'Surprise']
-emoji_path = "./emojis/"
+emoji_path = "../documentation/emojis/"
 mp_face = mp.solutions.face_detection
 
 def main():
@@ -24,7 +24,7 @@ def main():
             data = f.read()
         return base64.b64encode(data).decode()
 
-    bg_base64 = get_base64_bg("./extras/background_4.jpg")
+    bg_base64 = get_base64_bg("../documentation/extras/background_4.jpg")
 
     st.markdown(f"""
     <style>
@@ -65,7 +65,7 @@ def main():
 
     # ------------------- Sidebar -------------------
     with st.sidebar:
-        st.image("./extras/logo.png", width=200)
+        st.image("../documentation/extras/logo.png", width=200)
         st.header("🎛️ Controls")
         run = st.toggle("Start Camera")
         st.markdown("---")
