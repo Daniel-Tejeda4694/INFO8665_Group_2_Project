@@ -25,6 +25,7 @@ export default function MeetingPreview() {
   const [selectedAudio, setSelectedAudio] = useState<string | undefined>();
   const [selectedVideo, setSelectedVideo] = useState<string | undefined>();
   const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -37,16 +38,22 @@ export default function MeetingPreview() {
     });
   }, []);
 
+  const handleJoin = () => {
+    const roomId = "parla"; // or pull from an API/create-room endpoint
+    router.push(`/meeting_page/${roomId}?name=${name}`);
+  };
+
   return (
     <main className="min-h-screen">
       <ParlaLogo />
-      <GlassPanel className="absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
+      <GlassPanel className="relative top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
         {/* Camera Preview */}
-        <h2 className=" text-2xl font-bold text-center my-5">
-          Set up your call before joining
-        </h2>
+
         <div className="flex flex-row flex-1 mt-15">
-          <div className="bg-[#2B3E51] relative w-3/5 h-full max-h-full max-w-full flex items-center justify-center rounded-4xl aspect-video">
+          <div className="bg-[#2B3E51]/70 basis-2/5 flex-1 min-w-0 relative w-full h-full max-h-full max-w-full flex flex-col items-center justify-center rounded-4xl aspect-video">
+            <h2 className="text-2xl font-bold text-center my-5 absolute -translate-y-55">
+              Set up your call before joining
+            </h2>
             {videoEnabled ? (
               <Webcam
                 ref={webcamRef}
@@ -81,9 +88,9 @@ export default function MeetingPreview() {
             </div>
           </div>
 
-          <div className="flex flex-col w-full md:w-2/5 p-4">
+          <div className="flex flex-col basis-1/3 flex-1 p-4 items-center">
             {/* Dropdown Row */}
-            <div className="flex flex-col gap-5 mx-10 mb-9 w-full max-w-5xl justify-center">
+            <div className="flex flex-col gap-5 mb-5 flex-1 relative ">
               {/* Name */}
               <div className="w-full md:w-1/3">
                 <label className="flex items-center gap-2 mb-2 text-lg">
@@ -94,9 +101,9 @@ export default function MeetingPreview() {
                   type="text"
                   placeholder="Enter your name"
                   // value={roomCode}
-                  // onChange={(e) => {
-
-                  // }}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
                 />
               </div>
               {/* Audio Device */}
@@ -137,7 +144,7 @@ export default function MeetingPreview() {
 
               {/* Language Settings */}
               <div className="w-full md:w-1/3">
-                <label className="flex items-center gap-2 mb-2 text-sm">
+                <label className="flex items-center gap-2 mb-2 text-sm whitespace-nowrap">
                   <FaGlobe /> Language Settings
                 </label>
                 <select
@@ -159,9 +166,7 @@ export default function MeetingPreview() {
               <PrimaryButton onClick={() => router.push("/")}>
                 Cancel
               </PrimaryButton>
-              <PrimaryButton onClick={() => router.push("/meeting_page")}>
-                Join now
-              </PrimaryButton>
+              <PrimaryButton onClick={handleJoin}>Join now</PrimaryButton>
             </div>
           </div>
         </div>
