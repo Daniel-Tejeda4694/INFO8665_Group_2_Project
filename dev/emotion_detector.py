@@ -2,11 +2,17 @@
 import cv2
 import numpy as np
 import mediapipe as mp
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 from collections import Counter
 from PIL import Image
 
-model = load_model("../training/fer_vggnet_model.h5")
+#model = load_model("../training/fer_vggnet_model.h5")
+interpreter = tf.lite.Interpreter(model_path="../training/fer_vggnet_float16_quantized.tflite")
+interpreter.allocate_tensors()
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
 class_names = ['Angry', 'Happy', 'Neutral', 'Sad', 'Surprise']
 emoji_path = "../documentation/emojis/"
 
@@ -35,7 +41,11 @@ def detect_emotion_with_overlay(frame, emotion_history):
                 gray = cv2.cvtColor(face_roi, cv2.COLOR_BGR2GRAY)
                 resized = cv2.resize(gray, (48, 48)) / 255.0
                 input_tensor = np.expand_dims(resized, axis=(0, -1))
-                preds = model.predict(input_tensor)
+                ##### BLOCK CHANGED TO SUPPORT TFLITE MODEL
+                interpreter.set_tensor(input_details[0]['index'], input_tensor.astype(np.float32))
+                interpreter.invoke()
+                preds = interpreter.get_tensor(output_details[0]['index'])
+                #####
                 idx = np.argmax(preds)
                 label = class_names[idx]
                 conf = float(preds[0][idx])
