@@ -3,7 +3,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 COPY dev/flask_app.py dev/emotion_detector.py /app/
-COPY training/fer_vggnet_model.h5 /app/training/fer_vggnet_model.h5
+COPY training/fer_vggnet_float16_quantized.tflite /app/training/fer_vggnet_float16_quantized.tflite
 COPY documentation/emojis /app/documentation/emojis
 COPY documentation/setup/requirements_backend.txt /app/requirements_backend.txt
 
