@@ -6,8 +6,8 @@ from tensorflow.keras.models import load_model
 from collections import Counter
 from PIL import Image
 
-#model = load_model("../training/fer_vggnet_model.h5")
-model = load_model("../training/fer_vggnet_float16_quantized.tflite")
+model = load_model("../training/fer_vggnet_model.h5")
+#model = load_model("../training/fer_vggnet_float16_quantized.tflite")
 class_names = ['Angry', 'Happy', 'Neutral', 'Sad', 'Surprise']
 emoji_path = "../documentation/emojis/"
 
