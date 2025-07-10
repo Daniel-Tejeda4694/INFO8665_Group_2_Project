@@ -3,14 +3,14 @@ import React from "react";
 import ParlaLogo from "@/components/home/ParlaLogo"; //  Import logo component
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
+// import { useParams } from "next/navigation";
 
 import { FaUserPlus } from "react-icons/fa";
 import PrimaryButton from "../ui/PrimaryButton";
 
 export default function MeetingHeader() {
   const [copied, setCopied] = useState(false);
-  const { roomId } = useParams();
+  // const { roomId } = useParams();
 
   const handleCopy = async () => {
     const link = `${window.location.origin}/setting_page`;

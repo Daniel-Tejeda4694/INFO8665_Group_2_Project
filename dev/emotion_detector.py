@@ -6,9 +6,9 @@ from tensorflow.keras.models import load_model
 from collections import Counter
 from PIL import Image
 
-model = load_model("../training/fer_vggnet_model.h5")
+model = load_model("training/fer_vggnet_model.h5")
 class_names = ['Angry', 'Happy', 'Neutral', 'Sad', 'Surprise']
-emoji_path = "../documentation/emojis/"
+emoji_path = "documentation/emojis/"
 
 SHOW_LABELS = False  # Set to True for testing later
 
