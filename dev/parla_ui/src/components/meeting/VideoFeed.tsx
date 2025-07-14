@@ -1,8 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Socket } from "socket.io-client";
 import GlassPanel from "@/components/ui/GlassPanel";
-
-import { useEffect, useRef, useState } from "react";
 import {
   FaMicrophone,
   FaMicrophoneSlash,
@@ -13,92 +12,259 @@ import PrimaryButton from "../ui/PrimaryButton";
 
 type Participant = {
   id: string;
+  url: string;
   name: string;
-  stream?: MediaStream;
-  muted: boolean;
-  cameraOff: boolean;
+  video?: boolean;
 };
 
-export default function VideoFeed() {
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const [streaming, setStreaming] = useState(false);
+type Props = {
+  socket: Socket;
+  roomId: string;
+  userName: string;
+};
 
+export default function VideoFeed({ socket, roomId, userName }: Props) {
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const [streaming, setStreaming] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [myId, setMyId] = useState<string>("");
 
   // const handleStart = async () => {
   //   await fetch("/api/detection/start", { method: "POST" });
   //   setStreaming(true);
   // };
 
-  const handleStop = async () => {
-    await fetch("/api/detection/stop", { method: "POST" });
-    setStreaming(false);
-    if (imgRef.current) {
-      imgRef.current.src = ""; // clear image src to release old stream
-    }
+  // const handleStop = async () => {
+  //   // await fetch("/api/detection/stop", { method: "POST" });
+  //   setStreaming(false);
+  //   if (imgRef.current) {
+  //     imgRef.current.src = "";
+  //   }
+  // };
+
+  const handleToggleVideo = () => {
+    const newState = !videoEnabled;
+    setVideoEnabled(newState);
+    socket.emit("toggle-camera", {
+      roomId,
+      userId: myId,
+      video: newState,
+    });
   };
 
   useEffect(() => {
-    const startDetection = async () => {
+    fetch("/api/socket");
+
+    const joinRoom = async () => {
+      const id = socket.id;
+      if (id !== undefined) {
+        setMyId(id);
+      }
+
+      const streamURL = `http://localhost:5000/video_feed?user=${id}`;
+
+      setParticipants([{ id: id!, url: streamURL, name: userName }]);
+
+      socket.emit("join-room", {
+        roomId,
+        streamURL,
+        userName,
+        video: true,
+      });
+      console.log("Emitting join-room with", streamURL, userName);
+
+      // await fetch("/api/detection/start", { method: "POST" });
+      setStreaming(true);
+    };
+
+    socket.on("existing-users", (users: Participant[]) => {
+      console.log("Existing users:", users);
+      setParticipants((prev) => {
+        const all = [...prev, ...users];
+        const seen = new Set<string>();
+        return all.filter((user) => {
+          if (seen.has(user.id)) return false;
+          seen.add(user.id);
+          return true;
+        });
+      });
+    });
+
+    socket.on("camera-toggled", ({ id, video }) => {
+      setParticipants((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, video } : p))
+      );
+    });
+
+    socket.on("user-joined", ({ id, url, name }) => {
+      console.log("new user joined:", id, url, name);
+      setParticipants((prev) => {
+        if (prev.some((u) => u.id === id)) return prev;
+        return [...prev, { id, url, name, video: true }];
+      });
+    });
+
+    socket.on("user-left", (id: string) => {
+      setParticipants((prev) => prev.filter((s) => s.id !== id));
+    });
+
+    if (socket.connected) {
+      joinRoom();
+    } else {
+      socket.once("connect", joinRoom);
+    }
+
+    return () => {
+      socket.off("connect", joinRoom);
+      socket.off("existing-users");
+      socket.off("camera-toggled");
+      socket.off("user-joined");
+      socket.off("user-left");
+    };
+  }, [socket, roomId, userName]);
+
+  useEffect(() => {
+    let stream: MediaStream;
+    let interval: NodeJS.Timeout;
+
+    const startWebcam = async () => {
       try {
-        const res = await fetch("/api/detection/start", { method: "POST" });
-        if (!res.ok) throw new Error("Failed to start detection");
-        setStreaming(true);
-      } catch (err) {
-        console.error("Start error", err);
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          await new Promise((resolve) => {
+            videoRef.current!.onloadedmetadata = () => {
+              videoRef.current?.play();
+              resolve(true);
+            };
+          });
+        }
+        // setTimeout(() => {
+        interval = setInterval(() => {
+          if (!canvasRef.current || !videoRef.current) return;
+
+          const canvas = canvasRef.current;
+          const context = canvas.getContext("2d");
+          if (!context) return;
+
+          canvas.width = videoRef.current.videoWidth;
+          canvas.height = videoRef.current.videoHeight;
+
+          context.drawImage(
+            videoRef.current,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) return;
+
+              const formData = new FormData();
+              formData.append("frame", blob, "frame.webp");
+
+              fetch(`http://localhost:5000/upload_frame?user=${myId}`, {
+                method: "POST",
+                body: formData,
+              }).catch((err) => console.error("Frame send error:", err));
+            },
+            "image/webp",
+            0.7
+          );
+        }, 250);
+        // }, 1000);
+      } catch (error) {
+        console.error("Webcam error:", error);
       }
     };
 
+    if (videoEnabled && streaming && myId) {
+      startWebcam();
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+      if (stream) stream.getTracks().forEach((t) => t.stop());
+    };
+  }, [streaming, videoEnabled, myId]);
+
+  // useEffect(() => {
+  //   const startDetection = async () => {
+  //     try {
+  //       const res = await fetch("/api/detection/start", { method: "POST" });
+  //       if (!res.ok) throw new Error("Failed to start detection");
+  //       setStreaming(true);
+  //     } catch (err) {
+  //       console.error("Start error", err);
+  //     }
+  //   };
+
+  //   if (videoEnabled) {
+  //     startDetection();
+  //   } else {
+  //     handleStop();
+  //   }
+  // }, [videoEnabled]);
+
+  useEffect(() => {
     if (videoEnabled) {
-      startDetection();
+      setStreaming(true);
     } else {
-      handleStop();
+      setStreaming(false);
     }
   }, [videoEnabled]);
 
-  const [participants, setParticipants] = useState<Participant[]>([]);
   useEffect(() => {
-    setParticipants([
-      // {
-      //   id: "1",
-      //   name: "Alicia Padlock",
-      //   muted: false,
-      //   cameraOff: false,
-      //   stream: undefined,
-      // },
-      // {
-      //   id: "2",
-      //   name: "Sri Veronica",
-      //   muted: true,
-      //   cameraOff: true,
-      //   stream: undefined,
-      // },
-    ]);
-  }, []);
+    console.log("videoEnabled:", videoEnabled);
+    console.log("streaming:", streaming);
+    console.log("myId:", myId);
+  }, [videoEnabled, streaming, myId]);
 
   return (
-    <GlassPanel className="absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
-      <div className="flex flex-col gap-2 w-full relative h-full rounded-lg items-center justify-between">
+    <GlassPanel className="absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl min-w-0 h-3/4">
+      <div className="flex flex-col gap-5 w-full relative h-full items-center justify-between overflow-hidden">
         <div className="flex min-h-0 justify-center w-full h-full">
-          <div className="bg-[#2B3E51] relative h-full max-h-full max-w-full flex items-center justify-center rounded-xl aspect-video">
-            {streaming ? (
-              <img
-                key={Date.now()}
-                ref={imgRef}
-                src={`http://localhost:5000/video_feed?${Date.now()}`}
-                alt="Camera Stream"
-                className="w-full h-full object-cover rounded-xl"
-              />
+          <div className="bg-[#2B3E51]/70 relative h-auto min-h-0 max-h-full max-w-full flex items-center justify-center rounded-xl aspect-video">
+            {myId && streaming && videoEnabled ? (
+              // <Webcam
+              //   key={userName}
+              //   ref={webcamRef}
+              //   className="w-full h-full object-cover rounded-xl"
+              // />
+
+              <>
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  muted
+                  playsInline
+                  className="hidden"
+                />
+                <canvas ref={canvasRef} className="hidden" />
+                <img
+                  key={myId}
+                  ref={imgRef}
+                  src={`http://localhost:5000/video_feed?user=${myId}`}
+                  alt="My camera"
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              </>
             ) : (
               <div className="text-white text-4xl">
                 <div className="flex justify-center items-center bg-[#4178BC]/80 rounded-full w-30 h-30">
-                  M
+                  {userName.charAt(0)}
                 </div>
               </div>
             )}
-            <div className="flex absolute top-0 left-0 bg-[#4178BC]/50 text-xl p-1 rounded-tl-xl rounded-br-xl items-center">
-              <div className="mx-2">You</div>
+            <div className="flex absolute top-0 left-0 bg-[#4178BC]/60 text-xl p-1 rounded-tl-xl rounded-br-xl items-center">
+              <div className="mx-2 text-white">You</div>
             </div>
 
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 text-white">
@@ -110,7 +276,7 @@ export default function VideoFeed() {
                 )}
               </PrimaryButton>
 
-              <PrimaryButton onClick={() => setVideoEnabled((prev) => !prev)}>
+              <PrimaryButton onClick={handleToggleVideo}>
                 {videoEnabled ? (
                   <FaVideo size={20} />
                 ) : (
@@ -121,42 +287,36 @@ export default function VideoFeed() {
           </div>
         </div>
 
-        <div className="relative gap-2 flex items-center justify-center rounded-full">
-          {participants.map((p) => (
-            <div
-              key={p.id}
-              className="bg-gray-300 flex items-center justify-center relative max-h-full min-h-0 min-w-2xs rounded-3xl overflow-hidden aspect-video text-white text-4xl"
-            >
-              {p.stream && !p.cameraOff ? (
-                <video
-                  ref={(ref) => {
-                    if (ref && p.stream) {
-                      ref.srcObject = p.stream;
-                    }
-                  }}
-                  autoPlay
-                  muted
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="bg-amber-900 rounded-full w-15 h-15 flex items-center justify-center text-white text-2xl">
-                  {p.name[0]}
+        <div className="gap-2 flex items-center justify-center rounded-full">
+          {participants
+            .filter((user) => user.id !== myId)
+            .map((user) => (
+              <div
+                key={user.name}
+                className="relative w-56 max-w-56 overflow-x-auto bg-[#2B3E51]/70 h-auto min-h-0 max-h-full flex items-center justify-center rounded-xl aspect-video"
+              >
+                <div className="absolute bottom-1 left-1/2 bg-[#4178BC]/60 -translate-x-1/2 flex gap-3 text-white rounded-xl">
+                  <div className="mx-2 text-white">{user.name}</div>
+                  {/* <div className="flex absolute top-0 left-0  text-xl p-1 rounded-tl-xl rounded-br-xl items-center"> */}
                 </div>
-              )}
-
-              {p.muted && (
-                <div className="absolute top-2 right-2 bg-gray-500/70 p-1.5 rounded-full">
-                  <FaMicrophoneSlash size={20} />
-                </div>
-              )}
-              {/* <span className="absolute bottom-1 left-1 bg-black bg-opacity-60 text-white text-xs px-1 rounded">
-                {p.name}
-              </span>  */}
-              <span className="justify-center absolute bottom-2 bg-gray-500/70 text-white text-xs p-1.5 px-4 rounded-4xl items-center">
-                {p.name}
-              </span>
-            </div>
-          ))}
+                {user.video !== false ? (
+                  <img
+                    key={user.id}
+                    // ref={imgRef}
+                    src={`${user.url}&t=${Date.now()}`}
+                    alt={user.name}
+                    className="w-full h-full object-cover rounded-xl aspect-video"
+                  />
+                ) : (
+                  <div className="text-white text-4xl">
+                    <div className="flex justify-center items-center bg-[#4178BC]/80 rounded-full w-15 h-15">
+                      {user.name.charAt(0)}
+                    </div>
+                  </div>
+                )}
+              </div>
+              // </div>
+            ))}
         </div>
       </div>
     </GlassPanel>

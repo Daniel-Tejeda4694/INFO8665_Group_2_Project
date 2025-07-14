@@ -5,7 +5,7 @@ export async function POST() {
     });
     const text = await response.text();
     return new Response(text, { status: 200 });
-  } catch (error) {
+  } catch {
     return new Response("Failed to start detection", { status: 500 });
   }
 }
