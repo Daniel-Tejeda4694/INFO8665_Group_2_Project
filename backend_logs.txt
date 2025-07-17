@@ -1,0 +1,277 @@
+backend-1  | 2025-07-10 14:20:28.200800: I tensorflow/core/util/port.cc:110] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+backend-1  | 2025-07-10 14:20:28.251007: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+backend-1  | 2025-07-10 14:20:28.502674: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+backend-1  | 2025-07-10 14:20:28.503809: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+backend-1  | To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+backend-1  | 2025-07-10 14:20:29.676152: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+backend-1  | INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+backend-1  |  * Serving Flask app 'flask_app'
+backend-1  |  * Debug mode: on
+backend-1  | INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+backend-1  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+backend-1  | W0000 00:00:1752157232.375313      55 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
+backend-1  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+backend-1  |  * Running on all addresses (0.0.0.0)
+backend-1  |  * Running on http://127.0.0.1:5000
+backend-1  |  * Running on http://172.18.0.2:5000
+backend-1  | [33mPress CTRL+C to quit[0m
+backend-1  |  * Restarting with stat
+backend-1  | 2025-07-10 14:20:33.681256: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+backend-1  | INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+backend-1  | INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+backend-1  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+backend-1  | W0000 00:00:1752157235.036855     110 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
+backend-1  |  * Debugger is active!
+backend-1  |  * Debugger PIN: 431-031-243
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5520 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:52] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:52] "GET /video_feed?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5502 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:52] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5472 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:53] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5430 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:55] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5514 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:55] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5494 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:56] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5584 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:56] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5500 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:56] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5520 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:56] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5564 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:57] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5534 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:57] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5488 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:57] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5464 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:57] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5476 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:57] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5398 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:58] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5572 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:58] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5562 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:58] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5664 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:58] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5670 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:59] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5594 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:59] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5252 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:59] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5352 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:20:59] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5566 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:00] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5534 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:00] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5632 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:00] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5442 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:00] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5476 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:00] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5426 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:01] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5454 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:01] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5468 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:01] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5540 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:01] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5536 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:02] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5546 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:02] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5674 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:02] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5634 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:02] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: NWVeusSpP3yqlq_jAAAB, size: 5608 bytes
+backend-1  | 172.18.0.1 - - [10/Jul/2025 14:21:02] "POST /upload_frame?user=NWVeusSpP3yqlq_jAAAB HTTP/1.1" 200 -
+backend-1  | 2025-07-17 02:58:37.752728: I tensorflow/core/util/port.cc:110] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+backend-1  | 2025-07-17 02:58:37.812989: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+backend-1  | 2025-07-17 02:58:38.168969: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+backend-1  | 2025-07-17 02:58:38.169949: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+backend-1  | To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+backend-1  | 2025-07-17 02:58:39.200993: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+backend-1  | INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+backend-1  |  * Serving Flask app 'flask_app'
+backend-1  |  * Debug mode: on
+backend-1  | INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+backend-1  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+backend-1  |  * Running on all addresses (0.0.0.0)
+backend-1  |  * Running on http://127.0.0.1:5000
+backend-1  |  * Running on http://172.18.0.2:5000
+backend-1  | [33mPress CTRL+C to quit[0m
+backend-1  |  * Restarting with stat
+backend-1  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+backend-1  | W0000 00:00:1752721121.969534      53 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
+backend-1  | 2025-07-17 02:58:43.428265: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+backend-1  | INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+backend-1  | INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+backend-1  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+backend-1  | W0000 00:00:1752721124.700464     107 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
+backend-1  |  * Debugger is active!
+backend-1  |  * Debugger PIN: 990-307-950
+backend-1  | 172.18.0.1 - - [17/Jul/2025 02:58:55] "[33mGET / HTTP/1.1[0m" 404 -
+backend-1  | 172.18.0.1 - - [17/Jul/2025 02:58:56] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+backend-1  | 172.18.0.1 - - [17/Jul/2025 02:59:27] "[33mGET / HTTP/1.1[0m" 404 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12714 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:11] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:11] "GET /video_feed?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12842 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:12] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13478 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:12] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12586 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:12] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12760 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:12] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12568 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:12] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12530 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:13] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12512 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:13] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12604 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:13] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12540 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:13] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12850 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:14] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12446 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:14] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12768 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:14] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13082 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:14] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13000 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:15] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13390 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:15] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13196 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:15] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13066 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:15] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13028 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:16] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12966 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:16] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13248 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:16] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13002 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:16] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13078 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:17] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13140 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:17] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12862 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:17] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13214 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:17] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13268 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:18] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13200 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:18] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13184 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:18] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13196 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:18] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13264 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:19] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13180 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:19] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13126 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:19] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13146 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:19] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13248 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:19] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13158 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:20] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13040 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:20] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13262 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:20] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13236 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:20] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13174 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:21] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13290 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:21] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13014 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:21] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13084 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:21] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13098 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:22] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13218 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:22] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13204 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:22] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13304 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:22] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13310 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:23] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13206 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:23] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13234 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:23] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13336 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:23] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13174 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:24] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13110 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:24] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13148 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:24] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13122 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:24] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13176 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:25] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13218 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:25] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13196 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:25] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13130 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:25] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13126 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:26] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13062 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:26] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13006 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:26] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13138 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:26] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13056 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:27] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13014 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:27] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13152 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:27] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13052 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:27] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13090 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:28] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13030 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:28] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 12962 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:28] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13020 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:28] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13222 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:28] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13112 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:29] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13172 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:29] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
+backend-1  | Received frame for user: HPwSLjmoBlt93iisAAAB, size: 13100 bytes
+backend-1  | 172.18.0.1 - - [17/Jul/2025 03:01:29] "POST /upload_frame?user=HPwSLjmoBlt93iisAAAB HTTP/1.1" 200 -
