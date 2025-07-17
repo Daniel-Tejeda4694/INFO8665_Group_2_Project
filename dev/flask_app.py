@@ -5,9 +5,23 @@ import numpy as np
 import threading
 from collections import deque
 from emotion_detector import detect_emotion_with_overlay
+import logging
+from datetime import datetime
+import sys
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})  # Or restrict to localhost:3000
+
+###### LOG GENERATOR ######
+# Set up logging to STDOUT (works with Docker logs)
+access_logger = logging.getLogger('access_logger')
+access_logger.setLevel(logging.INFO)
+access_handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter('%(message)s')
+access_handler.setFormatter(formatter)
+access_logger.addHandler(access_handler)
+###### LOG GENERATOR ######
+
 emotion_history = deque(maxlen=15)
 camera_active = {"running": False}  # Use a mutable object to allow shared state
 
@@ -83,6 +97,24 @@ user_frames = {}
 user_locks = {}
 user_history = {}
 
+###### LOG GENERATOR ######
+@app.after_request
+def log_access(response):
+    ip = request.remote_addr or "-"
+    method = request.method
+    resource = request.path
+    status = response.status_code
+    bytes_sent = response.calculate_content_length() or "-"
+    referrer = request.referrer or "-"
+    user_agent = request.user_agent.string
+    timestamp = datetime.now().strftime('%d/%b/%Y:%H:%M:%S')
+
+    log_line = f'{ip} - - [{timestamp}] "{method} {resource} HTTP/1.1" {status} {bytes_sent} "{referrer}" "{user_agent}"'
+    access_logger.info(log_line)
+
+    return response
+
+###### LOG GENERATOR ######
 
 @app.route('/upload_frame', methods=['POST'])
 def upload_frame():
