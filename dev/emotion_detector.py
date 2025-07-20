@@ -8,13 +8,14 @@ from collections import Counter
 from PIL import Image
 
 #model = load_model("../training/fer_vggnet_model.h5")
-interpreter = tf.lite.Interpreter(model_path="training/fer_vggnet_float16_quantized.tflite")
+interpreter = tf.lite.Interpreter(model_path="../training/fer_vggnet_float16_quantized.tflite")
 interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
 class_names = ['Angry', 'Happy', 'Neutral', 'Sad', 'Surprise']
-emoji_path = "documentation/emojis/"
+#emoji_path = "documentation/emojis/" #docker
+emoji_path = "../documentation/emojis/" #local
 
 SHOW_LABELS = False  # Set to True for testing later
 
@@ -77,7 +78,7 @@ def detect_emotion_with_overlay(frame, emotion_history):
                         alpha * emoji_bgr[:, :, c] +
                         (1 - alpha) * frame[emoji_y:emoji_y + 80, emoji_x:emoji_x + 80, c]
                     )
-            except:
-                pass
+            except Exception as e:
+                print(f"Failed to overlay emoji for '{final_label}': {e}")
 
     return frame

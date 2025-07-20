@@ -8,21 +8,30 @@ from emotion_detector import detect_emotion_with_overlay
 import logging
 from datetime import datetime
 import sys
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})  # Or restrict to localhost:3000
+#CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})  # Or restrict to localhost:3000
+CORS(app, resources={r"/*": {"origins": os.getenv("FRONTEND_ORIGIN")}})  
+
+# Disable Flask's default logger to prevent duplicate logs
+#app.logger.disabled = True
 
 ###### LOG GENERATOR ######
-# Set up logging to STDOUT (works with Docker logs)
-access_logger = logging.getLogger('access_logger')
-access_logger.setLevel(logging.INFO)
-access_handler = logging.StreamHandler(sys.stdout)
-formatter = logging.Formatter('%(message)s')
-access_handler.setFormatter(formatter)
-access_logger.addHandler(access_handler)
+#Set up logging to STDOUT (works with Docker logs)
+# access_logger = logging.getLogger('access_logger')
+# access_logger.setLevel(logging.INFO)
+# access_handler = logging.StreamHandler(sys.stdout)
+# formatter = logging.Formatter('%(message)s')
+# access_handler.setFormatter(formatter)
+# access_logger.addHandler(access_handler)
 ###### LOG GENERATOR ######
 
-emotion_history = deque(maxlen=15)
+emotion_history = deque(maxlen=int(os.getenv("MAX_HISTORY", 10)))
+#emotion_history = deque(maxlen=15)
 camera_active = {"running": False}  # Use a mutable object to allow shared state
 
 # HTML Template with Start/Stop buttons
@@ -98,21 +107,21 @@ user_locks = {}
 user_history = {}
 
 ###### LOG GENERATOR ######
-@app.after_request
-def log_access(response):
-    ip = request.remote_addr or "-"
-    method = request.method
-    resource = request.path
-    status = response.status_code
-    bytes_sent = response.calculate_content_length() or "-"
-    referrer = request.referrer or "-"
-    user_agent = request.user_agent.string
-    timestamp = datetime.now().strftime('%d/%b/%Y:%H:%M:%S')
+# @app.after_request
+# def log_access(response):
+#     ip = request.remote_addr or "-"
+#     method = request.method
+#     resource = request.path
+#     status = response.status_code
+#     bytes_sent = response.calculate_content_length() or "-"
+#     referrer = request.referrer or "-"
+#     user_agent = request.user_agent.string
+#     timestamp = datetime.now().strftime('%d/%b/%Y:%H:%M:%S')
 
-    log_line = f'{ip} - - [{timestamp}] "{method} {resource} HTTP/1.1" {status} {bytes_sent} "{referrer}" "{user_agent}"'
-    access_logger.info(log_line)
+#     log_line = f'{ip} - / - [{timestamp}] "{method} {resource} HTTP/1.1" {status} {bytes_sent} "{referrer}" "{user_agent}"'
+#     access_logger.info(log_line)
 
-    return response
+#     return response
 
 ###### LOG GENERATOR ######
 
@@ -168,9 +177,15 @@ def gen_user_frames(user_id):
             continue
 
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+            b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
 
 if __name__ == "__main__":
+    host = os.getenv("FLASK_HOST")
+    port = int(os.getenv("FLASK_PORT"))
+    debug = os.getenv("FLASK_DEBUG", "True").lower() == "true"
+    
+    app.run(debug=debug, host=host, port=port)
     # app.run(debug=True)
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    #app.run(debug=True, host="0.0.0.0", port=5000)
+    #app.run(host="0.0.0.0", port=5000) 
