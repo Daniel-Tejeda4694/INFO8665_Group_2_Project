@@ -9,6 +9,7 @@ import logging
 from datetime import datetime
 import sys
 import os
+import time
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -137,6 +138,7 @@ def upload_frame():
 
     npimg = np.frombuffer(data, np.uint8)
     frame = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+    # frame = cv2.resize(frame, (600, 360))  # Resize to 640x360 (adjust as needed)
 
     if user_id not in user_locks:
         user_locks[user_id] = threading.Lock()
@@ -158,6 +160,9 @@ def video_feed():
 
 
 def gen_user_frames(user_id):
+    frame_count = 0
+    start_time = time.time()
+
     while True:
         if user_id not in user_frames:
             continue
@@ -168,16 +173,30 @@ def gen_user_frames(user_id):
             if frame is None:
                 continue
 
+            # Skip every other frame (adjust as needed)
+            frame_count += 1
+            if frame_count % 2 != 0:
+                continue
+
             frame = detect_emotion_with_overlay(frame, emotion_history)
-            ret, buffer = cv2.imencode('.jpg', frame)
+            ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])  # Adjust quality (70 is a good balance)
             frame_bytes = buffer.tobytes()
         
-        if frame is None or frame.size == 0:
-            print(f"[ERROR] Blank or invalid frame for user: {user_id}")
+        if frame is None or frame.size == 0 or not ret:
             continue
+
+        frame_count += 1
+        # Calculate and log FPS every second
+        elapsed_time = time.time() - start_time
+        if elapsed_time >= 1.0:
+            print(f"[{user_id}] Processed {frame_count} frames in the last second (~{frame_count} FPS)")
+            frame_count = 0
+            start_time = time.time()
 
         yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+        
+        # time.sleep(0.033)  # ~60 FPS back to client
 
 
 if __name__ == "__main__":
