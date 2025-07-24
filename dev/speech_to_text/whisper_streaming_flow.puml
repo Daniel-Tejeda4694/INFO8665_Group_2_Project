@@ -1,0 +1,57 @@
+@startuml
+start
+:Display supported languages;
+:User inputs language (user_input);
+if (user_input in supported_langs?) then (yes)
+    :Get language code (lan_code);
+    :Create WhisperRecognizer instance;
+    :Call streaming_mode();
+
+    --> [Call] streaming_mode()
+    :Print "Starting real-time transcription (Ctrl+C to stop)...";
+    :Start thread_audio;
+    :Start thread_transcribe;
+
+    fork
+        :audio_stream thread starts;
+        --> [Call] audio_stream()
+        repeat
+            :Capture audio chunk;
+            :Put chunk into queue;
+        repeat while (self.running)
+        :Exit audio_stream;
+    fork again
+        :transcribe_stream thread starts;
+        --> [Call] transcribe_stream()
+        repeat
+            :Get chunk from queue;
+            :Concatenate to buffer;
+            if (buffer length >= CHUNK_SIZE) then (yes)
+                :Extract segment;
+                :Normalize audio;
+                :Run model.transcribe();
+                :Append text to transcript;
+                :Write latest.txt;
+            endif
+        repeat while (self.running)
+        :Save full transcript;
+        :Exit transcribe_stream;
+    end fork
+
+    repeat
+        :Sleep 1 second;
+        :Check user input;
+        if (input is 'q'?) then (yes)
+            :Set self.running = False;
+            break
+        endif
+    repeat while (self.running)
+
+    :Join thread_audio;
+    :Join thread_transcribe;
+    :Print "All threads stopped";
+else (no)
+    :Print "Unsupported language. Please re-run.";
+endif
+stop
+@enduml

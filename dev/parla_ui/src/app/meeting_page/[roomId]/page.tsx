@@ -1,6 +1,7 @@
 "use client";
 import MeetingHeader from "@/components/meeting/MeetingHeader";
 import VideoFeed from "@/components/meeting/VideoFeed";
+import Transcribe from "@/components/meeting/Transcribe";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useParams, useSearchParams } from "next/navigation";
@@ -11,6 +12,7 @@ export default function MeetingPage() {
 
   const search = useSearchParams();
   const userName = search!.get("name")!;
+  const language = search!.get("lang") ?? "en"; // default english
 
   const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -32,10 +34,24 @@ export default function MeetingPage() {
     return <></>;
   }
 
-  return (
-    <main className="min-h-screen">
+  // return (
+  //   <main className="min-h-screen">
+  //     <MeetingHeader />
+  //     <VideoFeed socket={socket} roomId={roomId} userName={userName} />
+  //   </main>
+  // );
+   return (
+    <main className="min-h-screen bg-gray-50">
       <MeetingHeader />
-      <VideoFeed socket={socket} roomId={roomId} userName={userName} />
+
+      <div className="flex flex-col items-center space-y-6 mt-6">
+        <VideoFeed socket={socket} roomId={roomId} userName={userName} />
+
+        {/* STT display */}
+        <div className="w-4/5 bg-white bg-opacity-80 rounded-xl p-4 shadow text-black text-center text-lg max-h-40 overflow-y-auto">
+          <Transcribe roomId={roomId} language={language} />
+        </div>
+      </div>
     </main>
   );
 }
