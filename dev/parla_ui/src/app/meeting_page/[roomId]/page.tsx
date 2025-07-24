@@ -40,15 +40,15 @@ export default function MeetingPage() {
   //     <VideoFeed socket={socket} roomId={roomId} userName={userName} />
   //   </main>
   // );
-   return (
-    <main className="min-h-screen bg-gray-50">
+  return (
+    <main className="min-h-screen">
       <MeetingHeader />
 
       <div className="flex flex-col items-center space-y-6 mt-6">
         <VideoFeed socket={socket} roomId={roomId} userName={userName} />
 
         {/* STT display */}
-        <div className="w-4/5 bg-white bg-opacity-80 rounded-xl p-4 shadow text-black text-center text-lg max-h-40 overflow-y-auto">
+        <div className="w-4/5 bg-opacity-80 rounded-xl p-4 shadow text-black text-center text-lg max-h-40 overflow-y-auto">
           <Transcribe roomId={roomId} language={language} />
         </div>
       </div>

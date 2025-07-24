@@ -7,8 +7,10 @@ import {
   FaMicrophoneSlash,
   FaVideo,
   FaVideoSlash,
+  FaPhone,
 } from "react-icons/fa";
 import PrimaryButton from "../ui/PrimaryButton";
+import { redirect } from "next/navigation";
 
 type Participant = {
   id: string;
@@ -55,6 +57,21 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
       userId: myId,
       video: newState,
     });
+  };
+
+  const handleEndCall = () => {
+    // Cleanup resources
+    socket.emit("leave-room", { roomId, userId: myId }); // Notify the server
+    socket.disconnect(); // Disconnect the socket
+
+    // Stop the webcam stream
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+    }
+
+    // Redirect to the home page
+    redirect("/home_page");
   };
 
   useEffect(() => {
@@ -178,7 +195,7 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
             "image/webp",
             0.7
           );
-        }, 250);
+        }, 100);
         // }, 1000);
       } catch (error) {
         console.error("Webcam error:", error);
@@ -283,6 +300,14 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
                   <FaVideoSlash size={20} color="#ff007f" />
                 )}
               </PrimaryButton>
+
+              {/* End Call Button */}
+              <div
+                onClick={handleEndCall}
+                className="bg-[#ff007f]/80 text-white px-4 py-4 rounded-full shadow flex items-center hover:bg-[#ff007f] transition cursor-pointer"
+              >
+                <FaPhone size={20} />
+              </div>
             </div>
           </div>
         </div>
