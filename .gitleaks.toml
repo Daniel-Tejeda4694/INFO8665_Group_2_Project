@@ -1,0 +1,68 @@
+title = "Flask Project Gitleaks Config"
+description = "Detect hardcoded secrets and credentials in Flask projects"
+
+# [RULES]
+[[rules]]
+id = "env-file"
+description = ".env file detection"
+path = '''\.env$'''
+tags = ["env-var"]
+
+[[rules]]
+id = "flask-secret-key"
+description = "Potential Flask SECRET_KEY"
+regex = '''(?i)(secret_key\s*=\s*["'][a-zA-Z0-9_\-+=]{20,}["'])'''
+tags = ["key", "flask", "hardcoded"]
+entropy = 3.5
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(api[-_]?key\s*=\s*["'][a-z0-9-]{16,}["'])'''
+tags = ["key", "api", "generic"]
+
+[[rules]]
+id = "google-api-key"
+description = "Google API Key"
+regex = '''AIza[0-9A-Za-z\\-_]{35}'''
+tags = ["key", "google"]
+
+[[rules]]
+id = "aws-secret-key"
+description = "AWS Secret Access Key"
+regex = '''(?i)aws_(secret_?access_?key|secret_key)\s*=\s*["']?[A-Za-z0-9/+=]{40}["']?'''
+tags = ["key", "aws"]
+
+[[rules]]
+id = "db-connection-string"
+description = "Database Connection URI"
+regex = '''(?i)(postgresql|mysql|mongodb|sqlite)://[^\s'"]+'''
+tags = ["db", "uri", "connection"]
+
+[[rules]]
+id = "authorization-header"
+description = "Authorization Bearer Token"
+regex = '''(?i)(authorization\s*[:=]\s*["']?Bearer\s+[a-zA-Z0-9\-_.]{20,}["']?)'''
+tags = ["auth", "token"]
+
+# [ALLOWLIST]
+[allowlist]
+description = "Global allowlist rules"
+
+# Use simple path strings without regex syntax
+paths = [
+  "venv/",
+  "__pycache__/",
+  "node_modules/",
+  "tests/",
+  "examples/"
+]
+
+commits = ["abc123def4567890"]
+
+# Only use regex where absolutely necessary
+files = [
+  { regex = '''(?i).*test_.*\.py''' }
+]
+
+env = ["FLASK_ENV", "FLASK_DEBUG", "FLASK_PORT", "FLASK_HOST"]
