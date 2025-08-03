@@ -1,2 +1,3 @@
 # Ignore environment variables file
 .env
+dev/speech_to_text/models/whisper/base.pt
