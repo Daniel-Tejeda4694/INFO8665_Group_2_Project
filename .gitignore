@@ -1,2 +1,6 @@
 # Ignore environment variables file
 .env
+
+dev/mlflow_artifacts/
+
+dev/mlruns/
