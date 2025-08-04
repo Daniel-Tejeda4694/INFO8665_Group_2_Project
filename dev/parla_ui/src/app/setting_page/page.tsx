@@ -152,6 +152,7 @@ export default function MeetingPreview() {
                   value={selectedLanguage}
                   onChange={(e) => setSelectedLanguage(e.target.value)}
                 >
+                  <option value="en">English</option>
                   <option value="ml">Malayalam</option>
                   <option value="zh">Mandarin</option>
                   <option value="es">Spanish</option>
