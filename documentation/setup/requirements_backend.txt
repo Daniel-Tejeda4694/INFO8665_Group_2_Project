@@ -1,3 +1,4 @@
+# Main dependencies
 flask==3.1.1
 flask-cors==6.0.1
 opencv_python==4.8.0.74
@@ -11,3 +12,9 @@ pillow==11.2.1
 # opencv_contrib_python==4.11.0.86
 # pandas==2.3.0
 
+
+# For STT (OpenAI Whisper)
+scipy==1.15.3
+sounddevice==0.5.2
+numba==0.60.0
+dotenv==0.9.9

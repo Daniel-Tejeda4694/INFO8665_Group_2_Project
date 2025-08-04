@@ -1,6 +1,6 @@
-# 🧠 Parla: Real-Time Emotion Recognition API (Flask Backend)
+# 🧠 Parla: Real-Time Emotion and Speech Recognition API (Flask Backend)
 
-This project implements the **backend service** for *Parla*, a real-time facial emotion recognition system using a VGG-inspired CNN model. The Flask API streams live webcam input, detects faces using MediaPipe, and overlays emotion-specific emojis on the video feed.
+This project implements the **backend service** for Parla, a real-time facial emotion recognition and speech-to-text system. It features a VGG-inspired CNN model for emotion classification, integrated into a Flask API that streams live webcam input, detects faces using MediaPipe, and overlays emotion-specific emojis on the video feed. Additionally, this module provides a real-time streaming speech-to-text system using OpenAI Whisper. It records audio from a microphone and transcribes it in near real-time using multithreaded processing.
 
 ---
 
@@ -11,6 +11,10 @@ This project implements the **backend service** for *Parla*, a real-time facial 
 - 😊 Emoji overlay for five emotion classes: Angry, Happy, Neutral, Sad, Surprise
 - ♻️ Stabilized predictions using historical emotion buffer
 - 🔧 Toggleable display of confidence score and bounding boxes
+- 🎙️ Real-time **speech-to-text transcription** using OpenAI Whisper  
+- 🧩 Supports multiple Whisper model sizes (e.g., *tiny*, *base*, *small*, *medium*, *large*)  
+- 🧵 **Threaded architecture**: audio recording and transcription run in parallel  
+- 🌐 **Multilingual support** (e.g., *zh*, *en*, *ro*, *es*, etc.)
 
 ---
 
@@ -23,6 +27,8 @@ This project implements the **backend service** for *Parla*, a real-time facial 
 │   └── fer_vggnet_model.h5   # Pretrained CNN model (required)
 ├── documentation/
 │   └── emojis/               # PNG emoji files for overlay
+├── speech_to_text/
+│   └── whisper_engine.py     # Real time speech-to-text
 ```
 
 ---
@@ -44,6 +50,18 @@ pip install -r requirements_backend.txt
 - MediaPipe
 
 ---
+
+Install Whisper and other required dependencies in the following order (recommended with --no-deps to avoid dependency conflicts).
+``` bash
+# Install Whisper from GitHub
+pip install git+https://github.com/openai/whisper.git --no-deps
+
+# Install required dependencies
+pip install torch --no-deps
+pip install tqdm --no-deps 
+pip install tiktoken --no-deps
+pip install regex --no-deps
+```
 
 ## 🏁 Running the Server
 

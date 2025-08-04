@@ -9,6 +9,10 @@ import queue
 import threading
 import time
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+LATEST_PATH = os.path.join(OUTPUT_DIR, "latest.txt")
+
 class WhisperRecognizer:
     def __init__(self, isPipeline=False, default_model_size="base", lan="zh", select_default_model_size=True):
         self.SAMPLE_RATE = 16000
@@ -28,8 +32,8 @@ class WhisperRecognizer:
         self.last_text = ""
         self.display_mic_info()
         self.running = True
-        self.output_dir = "output"
-        self.output_tempfile = "latest.txt"
+        self.output_dir = OUTPUT_DIR
+        self.output_tempfile = LATEST_PATH
 
     def test_input_devices(self):
         for i, dev in enumerate(sd.query_devices()):
@@ -237,7 +241,7 @@ class WhisperRecognizer:
         thread_transcribe.join()
         print("All threads stopped.")
 
-if __name__ == "__main__":
+def run_engine(is_default_english=True):
     """
     Language list supported by whisper could be found in https://github.com/openai/whisper/blob/main/whisper/tokenizer.py.
     """
@@ -250,12 +254,46 @@ if __name__ == "__main__":
         "english": "en"
     }
 
-    print("Please enter a language (chinese / romanian / spanish / malayalam / telugu / english):")
-    user_input = input("Language: ").strip().lower()
-
-    if user_input in supported_langs:
-        lan_code = supported_langs[user_input]
-        whiRecognizer = WhisperRecognizer(lan=lan_code)
-        whiRecognizer.streaming_mode()
+    if is_default_english:
+        lan_code = "en"
     else:
-        print("Unsupported language. Please re-run and enter a valid option.")
+        print("Please enter a language (chinese / romanian / spanish / malayalam / telugu / english):")
+        user_input = input("Language: ").strip().lower()
+        if user_input in supported_langs:
+            lan_code = supported_langs[user_input]
+        else:
+            lan_code = "en"
+
+    whiRecognizer = WhisperRecognizer(lan=lan_code)
+    whiRecognizer.streaming_mode()
+    return
+    # if user_input in supported_langs:
+    #     lan_code = supported_langs[user_input]
+    #     whiRecognizer = WhisperRecognizer(lan=lan_code)
+    #     whiRecognizer.streaming_mode()
+    # else:
+    #     print("Unsupported language. Please re-run and enter a valid option.")
+
+if __name__ == "__main__":
+    # """
+    # Language list supported by whisper could be found in https://github.com/openai/whisper/blob/main/whisper/tokenizer.py.
+    # """
+    # supported_langs = {
+    #     "chinese": "zh",
+    #     "romanian": "ro",
+    #     "spanish": "es",
+    #     "malayalam": "ml",
+    #     "telugu": "te",
+    #     "english": "en"
+    # }
+
+    # print("Please enter a language (chinese / romanian / spanish / malayalam / telugu / english):")
+    # user_input = input("Language: ").strip().lower()
+
+    # if user_input in supported_langs:
+    #     lan_code = supported_langs[user_input]
+    #     whiRecognizer = WhisperRecognizer(lan=lan_code)
+    #     whiRecognizer.streaming_mode()
+    # else:
+    #     print("Unsupported language. Please re-run and enter a valid option.")
+    run_engine()
