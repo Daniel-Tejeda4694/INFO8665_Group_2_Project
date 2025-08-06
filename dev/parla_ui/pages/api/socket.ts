@@ -11,7 +11,7 @@ type NextApiResponseWithSocket = NextApiResponse & {
   };
 };
 
-const roomParticipants: Record<string, Record<string, { streamURL: string; userName: string, videoEnabled: boolean }>> = {};
+const roomParticipants: Record<string, Record<string, { streamURL: string; userName: string, audioEnabled: boolean, videoEnabled: boolean }>> = {};
 
 export default function handler(req: NextApiRequest,
   res: NextApiResponseWithSocket) {
@@ -34,7 +34,7 @@ export default function handler(req: NextApiRequest,
       console.log(`Socket connected: ${socket.id}`)
       let currentRoom: string | null = null;
 
-      socket.on('join-room', ({ roomId, userName, streamURL, videoEnabled }) => {
+      socket.on('join-room', ({ roomId, userName, streamURL, audioEnabled, videoEnabled }) => {
         currentRoom = roomId;
         socket.join(roomId)
 
@@ -42,7 +42,7 @@ export default function handler(req: NextApiRequest,
         //   roomParticipants[roomId] = {};
         // }
         roomParticipants[roomId] = roomParticipants[roomId] || {};
-        roomParticipants[roomId][socket.id] = { streamURL, userName, videoEnabled };
+        roomParticipants[roomId][socket.id] = { streamURL, userName, audioEnabled, videoEnabled };
 
         // Send existing users to the new client
         const existingUsers = Object.entries(roomParticipants[roomId])
@@ -51,6 +51,7 @@ export default function handler(req: NextApiRequest,
             id,
             url: info.streamURL,
             name: info.userName,
+            audio: info.audioEnabled,
             video: info.videoEnabled
           }));
 
@@ -61,6 +62,7 @@ export default function handler(req: NextApiRequest,
           id: socket.id,
           url: streamURL,
           name: userName,
+          audio: audioEnabled,
           video: videoEnabled
         });
       });
@@ -75,6 +77,18 @@ export default function handler(req: NextApiRequest,
         socket.to(roomId).emit("camera-toggled", {
           id: userId,
           video,
+        });
+      });
+
+      socket.on("toggle-microphone", ({ roomId, userId, audio }) => {
+        // if (roomParticipants[roomId] && roomParticipants[roomId][userId]) {
+        if (roomParticipants[roomId]?.[userId]) {
+          roomParticipants[roomId][userId].audioEnabled = audio;
+        }
+
+        socket.to(roomId).emit("microphone-toggled", {
+          id: userId,
+          audio,
         });
       });
             

@@ -2,6 +2,7 @@
 import ParlaLogo from "@/components/home/ParlaLogo";
 import PrimaryButton from "@/components/ui/PrimaryButton";
 import GlassPanel from "@/components/ui/GlassPanel";
+import { v4 as uuidv4 } from "uuid"; // npm install uuid
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,30 +14,17 @@ export default function HomePage() {
   const [error, setError] = useState("");
   const [inputValue, setInputValue] = useState("");
 
-  // const newRoomId = `room-${Date.now()}`;
+  const handleNewMeeting = () => {
+    const newRoomId = uuidv4();
+    router.push(`/setting_page?room=${newRoomId}`);
+  };
 
   const handleJoin = async () => {
     if (roomCode) {
-      router.push(`/meeting_page?room=${roomCode}`);
+      router.push(`/setting_page?room=${roomCode}`);
     } else {
       setError("Invalid room code");
     }
-
-    // const roomId = roomCode.trim().split("/").pop() || roomCode.trim();
-
-    // try {
-    //   const res = await fetch("/api/rooms/parla");
-    //   const data = await res.json();
-
-    //   if (data.valid) {
-    //     router.push(`/meeting_page?room=${roomId}`);
-    //   } else {
-    //     setError("Invalid room link");
-    //   }
-    // } catch (err) {
-    //   console.error("API error:", err);
-    //   setError("Failed to validate room. Try again.");
-    // }
   };
 
   return (
@@ -53,7 +41,7 @@ export default function HomePage() {
           Reach out from any language with Parla
         </p>
         <div className="flex flex-wrap gap-4">
-          <PrimaryButton onClick={() => router.push("/setting_page")}>
+          <PrimaryButton onClick={handleNewMeeting}>
             <FaPlus></FaPlus>
             <span className="ml-2">New meeting</span>
           </PrimaryButton>
@@ -76,7 +64,6 @@ export default function HomePage() {
               ? "border border-gray-300 text-white hover:bg-[#4178BC]/30 cursor-pointer transition"
               : "text-white/50 cursor-auto"
           }`}
-            // onClick={() => router.push("/setting_page")}
             onClick={handleJoin}
           >
             Join
