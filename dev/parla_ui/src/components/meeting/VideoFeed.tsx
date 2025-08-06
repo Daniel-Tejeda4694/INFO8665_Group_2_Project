@@ -16,6 +16,7 @@ type Participant = {
   id: string;
   url: string;
   name: string;
+  audio?: boolean;
   video?: boolean;
 };
 
@@ -23,16 +24,25 @@ type Props = {
   socket: Socket;
   roomId: string;
   userName: string;
+  audioEnabled: boolean;
+  videoEnabled: boolean;
 };
 
-export default function VideoFeed({ socket, roomId, userName }: Props) {
+export default function VideoFeed({
+  socket,
+  roomId,
+  userName,
+  audioEnabled,
+  videoEnabled,
+}: Props) {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const [streaming, setStreaming] = useState(false);
-  const [audioEnabled, setAudioEnabled] = useState(true);
-  const [videoEnabled, setVideoEnabled] = useState(true);
+  const [video, setVideo] = useState(videoEnabled);
+  const [audio, setAudio] = useState(audioEnabled);
+
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [myId, setMyId] = useState<string>("");
 
@@ -49,9 +59,19 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
   //   }
   // };
 
+  const handleToggleAudio = () => {
+    const newState = !audioEnabled;
+    setAudio(newState);
+    socket.emit("toggle-microphone", {
+      roomId,
+      userId: myId,
+      audio: newState,
+    });
+  };
+
   const handleToggleVideo = () => {
     const newState = !videoEnabled;
-    setVideoEnabled(newState);
+    setVideo(newState);
     socket.emit("toggle-camera", {
       roomId,
       userId: myId,
@@ -70,9 +90,13 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
       stream.getTracks().forEach((track) => track.stop());
     }
 
-    // Redirect to the home page
+    // TO DO: Redirect to another page
     redirect("/home_page");
   };
+
+  // useEffect(() => {
+  //   setVideo(videoEnabled);
+  // }, [videoEnabled]);
 
   useEffect(() => {
     fetch("/api/socket");
@@ -92,6 +116,7 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
         streamURL,
         userName,
         video: true,
+        audio: true,
       });
       console.log("Emitting join-room with", streamURL, userName);
 
@@ -122,7 +147,7 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
       console.log("new user joined:", id, url, name);
       setParticipants((prev) => {
         if (prev.some((u) => u.id === id)) return prev;
-        return [...prev, { id, url, name, video: true }];
+        return [...prev, { id, url, name, video: true, audio: true }];
       });
     });
 
@@ -244,6 +269,11 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
     console.log("myId:", myId);
   }, [videoEnabled, streaming, myId]);
 
+  useEffect(() => {
+    setAudio(audioEnabled);
+    setVideo(videoEnabled);
+  }, [audioEnabled, videoEnabled]);
+
   return (
     <GlassPanel className="absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl min-w-0 h-3/4">
       <div className="flex flex-col gap-5 w-full relative h-full items-center justify-between overflow-hidden">
@@ -285,16 +315,15 @@ export default function VideoFeed({ socket, roomId, userName }: Props) {
             </div>
 
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 text-white">
-              <PrimaryButton onClick={() => setAudioEnabled(!audioEnabled)}>
-                {audioEnabled ? (
+              <PrimaryButton onClick={handleToggleAudio}>
+                {audio ? (
                   <FaMicrophone size={20} />
                 ) : (
                   <FaMicrophoneSlash size={20} color="#ff007f" />
                 )}
               </PrimaryButton>
-
               <PrimaryButton onClick={handleToggleVideo}>
-                {videoEnabled ? (
+                {video ? (
                   <FaVideo size={20} />
                 ) : (
                   <FaVideoSlash size={20} color="#ff007f" />

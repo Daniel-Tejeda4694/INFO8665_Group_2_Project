@@ -13,6 +13,8 @@ export default function MeetingPage() {
   const search = useSearchParams();
   const userName = search!.get("name")!;
   const language = search!.get("lang") ?? "en"; // default english
+  const audioEnabled = search!.get("audio") !== "0"; // default true
+  const videoEnabled = search!.get("video") !== "0"; // default true
 
   const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -34,22 +36,22 @@ export default function MeetingPage() {
     return <></>;
   }
 
-  // return (
-  //   <main className="min-h-screen">
-  //     <MeetingHeader />
-  //     <VideoFeed socket={socket} roomId={roomId} userName={userName} />
-  //   </main>
-  // );
   return (
     <main className="min-h-screen">
-      <MeetingHeader />
+      <MeetingHeader roomId={roomId} />
 
       <div className="flex flex-col items-center space-y-6 mt-6">
-        <VideoFeed socket={socket} roomId={roomId} userName={userName} />
+        <VideoFeed
+          socket={socket}
+          roomId={roomId}
+          userName={userName}
+          audioEnabled={audioEnabled}
+          videoEnabled={videoEnabled}
+        />
 
         {/* STT display */}
         <div className="w-4/5 bg-opacity-80 rounded-xl p-4 shadow text-black text-center text-lg max-h-40 overflow-y-auto">
-          <Transcribe roomId={roomId} language={language} />
+          <Transcribe userName={userName} roomId={roomId} language={language} />
         </div>
       </div>
     </main>

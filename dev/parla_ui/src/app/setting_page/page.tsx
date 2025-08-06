@@ -4,7 +4,7 @@ import GlassPanel from "@/components/ui/GlassPanel";
 import ParlaLogo from "@/components/home/ParlaLogo"; //  Import logo component
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   FaMicrophone,
   FaMicrophoneSlash,
@@ -17,6 +17,8 @@ import PrimaryButton from "@/components/ui/PrimaryButton";
 export default function MeetingPreview() {
   const webcamRef = useRef<Webcam | null>(null);
   const router = useRouter();
+  const search = useSearchParams();
+  const roomId = search?.get("room");
 
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
@@ -37,11 +39,6 @@ export default function MeetingPreview() {
       if (videos.length > 0) setSelectedVideo(videos[0].deviceId);
     });
   }, []);
-
-  const handleJoin = () => {
-    const roomId = "parla"; // or pull from an API/create-room endpoint
-    router.push(`/meeting_page/${roomId}?name=${name}`);
-  };
 
   return (
     <main className="min-h-screen">
@@ -167,7 +164,17 @@ export default function MeetingPreview() {
               <PrimaryButton onClick={() => router.push("/")}>
                 Cancel
               </PrimaryButton>
-              <PrimaryButton onClick={handleJoin}>Join now</PrimaryButton>
+              <PrimaryButton
+                onClick={() =>
+                  router.push(
+                    `/meeting_page/${roomId}?name=${name}&lang=${selectedLanguage}&audio=${
+                      audioEnabled ? "1" : "0"
+                    }&video=${videoEnabled ? "1" : "0"}`
+                  )
+                }
+              >
+                Join now
+              </PrimaryButton>
             </div>
           </div>
         </div>

@@ -8,12 +8,16 @@ import { useState } from "react";
 import { FaUserPlus } from "react-icons/fa";
 import PrimaryButton from "../ui/PrimaryButton";
 
-export default function MeetingHeader() {
+type Props = {
+  roomId: string;
+};
+
+export default function MeetingHeader({ roomId }: Props) {
   const [copied, setCopied] = useState(false);
   // const { roomId } = useParams();
 
   const handleCopy = async () => {
-    const link = `${window.location.origin}/setting_page`;
+    const link = roomId;
     await navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 3000); // Reset after 2 seconds
@@ -34,7 +38,7 @@ export default function MeetingHeader() {
         <PrimaryButton onClick={handleCopy}>
           <FaUserPlus size={20} />
           <span className="text-sm ml-2">
-            {copied ? "Copied invite link" : "Copy invite link"}
+            {copied ? "Copied meeting code" : "Copy meeting code"}
           </span>
         </PrimaryButton>
       </div>
