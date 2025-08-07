@@ -1,6 +1,8 @@
 # Ignore environment variables file
 .env
 dev/speech_to_text/models/whisper/base.pt
+dev/models
+dev/speech_to_text
 
 dev/mlflow_artifacts/
 
