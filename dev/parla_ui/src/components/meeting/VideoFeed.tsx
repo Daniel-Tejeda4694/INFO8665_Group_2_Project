@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import GlassPanel from "@/components/ui/GlassPanel";
 import {
   FaMicrophone,
   FaMicrophoneSlash,
@@ -26,6 +25,8 @@ type Props = {
   userName: string;
   audioEnabled: boolean;
   videoEnabled: boolean;
+  participants: Participant[];
+  setParticipants: React.Dispatch<React.SetStateAction<Participant[]>>;
 };
 
 export default function VideoFeed({
@@ -34,6 +35,8 @@ export default function VideoFeed({
   userName,
   audioEnabled,
   videoEnabled,
+  participants,
+  setParticipants,
 }: Props) {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -43,7 +46,6 @@ export default function VideoFeed({
   const [video, setVideo] = useState(videoEnabled);
   const [audio, setAudio] = useState(audioEnabled);
 
-  const [participants, setParticipants] = useState<Participant[]>([]);
   const [myId, setMyId] = useState<string>("");
 
   // const handleStart = async () => {
@@ -60,22 +62,26 @@ export default function VideoFeed({
   // };
 
   const handleToggleAudio = () => {
-    const newState = !audioEnabled;
-    setAudio(newState);
-    socket.emit("toggle-microphone", {
-      roomId,
-      userId: myId,
-      audio: newState,
+    setAudio((prev) => {
+      const newState = !prev;
+      socket.emit("toggle-microphone", {
+        roomId,
+        userId: myId,
+        audio: newState,
+      });
+      return newState;
     });
   };
 
   const handleToggleVideo = () => {
-    const newState = !videoEnabled;
-    setVideo(newState);
-    socket.emit("toggle-camera", {
-      roomId,
-      userId: myId,
-      video: newState,
+    setVideo((prev) => {
+      const newState = !prev;
+      socket.emit("toggle-camera", {
+        roomId,
+        userId: myId,
+        video: newState,
+      });
+      return newState;
     });
   };
 
@@ -275,104 +281,102 @@ export default function VideoFeed({
   }, [audioEnabled, videoEnabled]);
 
   return (
-    <GlassPanel className="absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl min-w-0 h-3/4">
-      <div className="flex flex-col gap-5 w-full relative h-full items-center justify-between overflow-hidden">
-        <div className="flex min-h-0 justify-center w-full h-full">
-          <div className="bg-[#2B3E51]/70 relative h-auto min-h-0 max-h-full max-w-full flex items-center justify-center rounded-xl aspect-video">
-            {myId && streaming && videoEnabled ? (
-              // <Webcam
-              //   key={userName}
-              //   ref={webcamRef}
-              //   className="w-full h-full object-cover rounded-xl"
-              // />
+    <div className="flex flex-col gap-5 w-full relative h-full items-center justify-between overflow-hidden">
+      <div className="flex min-h-0 justify-center w-full h-full">
+        <div className="bg-[#2B3E51]/70 w-full relative min-h-0 aspect-4/2 max-h-full max-w-full flex items-center justify-center rounded-xl">
+          {myId && streaming && videoEnabled ? (
+            // <Webcam
+            //   key={userName}
+            //   ref={webcamRef}
+            //   className="w-full h-full object-cover rounded-xl"
+            // />
 
-              <>
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  muted
-                  playsInline
-                  className="hidden"
-                />
-                <canvas ref={canvasRef} className="hidden" />
-                <img
-                  key={myId}
-                  ref={imgRef}
-                  src={`http://localhost:5000/video_feed?user=${myId}`}
-                  alt="My camera"
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              </>
-            ) : (
-              <div className="text-white text-4xl">
-                <div className="flex justify-center items-center bg-[#4178BC]/80 rounded-full w-30 h-30">
-                  {userName.charAt(0)}
-                </div>
+            <>
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                playsInline
+                className="hidden"
+              />
+              <canvas ref={canvasRef} className="hidden" />
+              <img
+                key={myId}
+                ref={imgRef}
+                src={`http://localhost:5000/video_feed?user=${myId}`}
+                alt="My camera"
+                className="w-full h-full object-cover rounded-xl"
+              />
+            </>
+          ) : (
+            <div className="text-white text-4xl">
+              <div className="flex justify-center items-center bg-[#4178BC]/80 rounded-full w-30 h-30">
+                {userName.charAt(0)}
               </div>
-            )}
-            <div className="flex absolute top-0 left-0 bg-[#4178BC]/60 text-xl p-1 rounded-tl-xl rounded-br-xl items-center">
-              <div className="mx-2 text-white">You</div>
             </div>
+          )}
+          <div className="flex absolute top-0 left-0 bg-[#4178BC]/60 text-xl p-1 rounded-tl-xl rounded-br-xl items-center">
+            <div className="mx-2 text-white">You</div>
+          </div>
 
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 text-white">
-              <PrimaryButton onClick={handleToggleAudio}>
-                {audio ? (
-                  <FaMicrophone size={20} />
-                ) : (
-                  <FaMicrophoneSlash size={20} color="#ff007f" />
-                )}
-              </PrimaryButton>
-              <PrimaryButton onClick={handleToggleVideo}>
-                {video ? (
-                  <FaVideo size={20} />
-                ) : (
-                  <FaVideoSlash size={20} color="#ff007f" />
-                )}
-              </PrimaryButton>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 text-white">
+            <PrimaryButton onClick={handleToggleAudio}>
+              {audio ? (
+                <FaMicrophone size={20} />
+              ) : (
+                <FaMicrophoneSlash size={20} color="#ff007f" />
+              )}
+            </PrimaryButton>
+            <PrimaryButton onClick={handleToggleVideo}>
+              {video ? (
+                <FaVideo size={20} />
+              ) : (
+                <FaVideoSlash size={20} color="#ff007f" />
+              )}
+            </PrimaryButton>
 
-              {/* End Call Button */}
-              <div
-                onClick={handleEndCall}
-                className="bg-[#ff007f]/80 text-white px-4 py-4 rounded-full shadow flex items-center hover:bg-[#ff007f] transition cursor-pointer"
-              >
-                <FaPhone size={20} />
-              </div>
+            {/* End Call Button */}
+            <div
+              onClick={handleEndCall}
+              className="bg-[#ff007f]/80 text-white px-4 py-4 rounded-full shadow flex items-center hover:bg-[#ff007f] transition cursor-pointer"
+            >
+              <FaPhone size={20} />
             </div>
           </div>
         </div>
-
-        <div className="gap-2 flex items-center justify-center rounded-full">
-          {participants
-            .filter((user) => user.id !== myId)
-            .map((user) => (
-              <div
-                key={user.name}
-                className="relative w-56 max-w-56 overflow-x-auto bg-[#2B3E51]/70 h-auto min-h-0 max-h-full flex items-center justify-center rounded-xl aspect-video"
-              >
-                <div className="absolute bottom-1 left-1/2 bg-[#4178BC]/60 -translate-x-1/2 flex gap-3 text-white rounded-xl">
-                  <div className="mx-2 text-white">{user.name}</div>
-                  {/* <div className="flex absolute top-0 left-0  text-xl p-1 rounded-tl-xl rounded-br-xl items-center"> */}
-                </div>
-                {user.video !== false ? (
-                  <img
-                    key={user.id}
-                    // ref={imgRef}
-                    src={`${user.url}&t=${Date.now()}`}
-                    alt={user.name}
-                    className="w-full h-full object-cover rounded-xl aspect-video"
-                  />
-                ) : (
-                  <div className="text-white text-4xl">
-                    <div className="flex justify-center items-center bg-[#4178BC]/80 rounded-full w-15 h-15">
-                      {user.name.charAt(0)}
-                    </div>
-                  </div>
-                )}
-              </div>
-              // </div>
-            ))}
-        </div>
       </div>
-    </GlassPanel>
+
+      <div className="gap-3 flex items-center justify-center rounded-full mb-5">
+        {participants
+          .filter((user) => user.id !== myId)
+          .map((user) => (
+            <div
+              key={user.name}
+              className="relative w-2xs overflow-x-auto bg-[#2B3E51]/70 min-h-0  flex items-center justify-center rounded-xl aspect-4/2"
+            >
+              <div className="absolute bottom-1 left-1/2 bg-[#4178BC]/60 -translate-x-1/2 flex gap-3 text-white rounded-xl">
+                <div className="mx-2 text-white">{user.name}</div>
+                {/* <div className="flex absolute top-0 left-0  text-xl p-1 rounded-tl-xl rounded-br-xl items-center"> */}
+              </div>
+              {user.video !== false ? (
+                <img
+                  key={user.id}
+                  // ref={imgRef}
+                  src={`${user.url}&t=${Date.now()}`}
+                  alt={user.name}
+                  className="w-full h-full object-cover rounded-xl aspect-video"
+                />
+              ) : (
+                <div className="text-white text-4xl">
+                  <div className="flex justify-center items-center bg-[#4178BC]/80 rounded-full w-15 h-15">
+                    {user.name.charAt(0)}
+                  </div>
+                </div>
+              )}
+            </div>
+            // </div>
+          ))}
+      </div>
+    </div>
   );
 }

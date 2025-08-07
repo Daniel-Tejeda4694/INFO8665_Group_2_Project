@@ -27,7 +27,7 @@ export default function LoginPage() {
     >
       <ParlaLogo />
       {/* Login Card */}
-      <GlassPanel className="flex flex-col items-center justify-center absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
+      <GlassPanel className="p-8 flex flex-col items-center justify-center absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
         <div className="p-10 rounded-2xl shadow-lg w-sm align-center">
           <h1 className="text-3xl sm:text-4xl font-bold mb-8">
             Login to Parla

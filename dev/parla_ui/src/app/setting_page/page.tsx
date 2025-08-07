@@ -43,7 +43,7 @@ export default function MeetingPreview() {
   return (
     <main className="min-h-screen">
       <ParlaLogo />
-      <GlassPanel className="relative top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
+      <GlassPanel className="p-8 relative top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
         {/* Camera Preview */}
 
         <div className="flex flex-row flex-1 mt-15">
