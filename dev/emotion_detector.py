@@ -6,6 +6,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from collections import Counter
 from PIL import Image
+from datetime import datetime, timezone
 
 #model = load_model("../training/fer_vggnet_model.h5")
 interpreter = tf.lite.Interpreter(model_path="../training/fer_vggnet_float16_quantized.tflite")
@@ -25,6 +26,8 @@ detector = mp_face.FaceDetection(model_selection=0, min_detection_confidence=0.5
 def detect_emotion_with_overlay(frame, emotion_history):
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = detector.process(rgb)
+
+    detected_emotion = None
 
     if results.detections:
         for detection in results.detections:
@@ -55,6 +58,7 @@ def detect_emotion_with_overlay(frame, emotion_history):
                 continue
 
             final_label = Counter(emotion_history).most_common(1)[0][0]
+            detected_emotion = final_label  # Capture detected emotion
 
             if SHOW_LABELS:
                 # Draw label and confidence
@@ -81,4 +85,4 @@ def detect_emotion_with_overlay(frame, emotion_history):
             except Exception as e:
                 print(f"Failed to overlay emoji for '{final_label}': {e}")
 
-    return frame
+    return frame, detected_emotion, datetime.now(timezone.utc).isoformat()

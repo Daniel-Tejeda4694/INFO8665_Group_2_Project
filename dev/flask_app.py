@@ -13,6 +13,8 @@ import time
 from dotenv import load_dotenv
 from speech_to_text.whisper_engine import run_engine
 import threading
+from flask import session
+from log_utils import log_emotion
 
 load_dotenv()
 
@@ -34,6 +36,7 @@ CORS(app, resources={r"/*": {"origins": os.getenv("FRONTEND_ORIGIN")}})
 ###### LOG GENERATOR ######
 
 emotion_history = deque(maxlen=int(os.getenv("MAX_HISTORY", 10)))
+#print("EMOTION HISTORY: ", emotion_history)
 #emotion_history = deque(maxlen=15)
 camera_active = {"running": False}  # Use a mutable object to allow shared state
 
@@ -165,6 +168,7 @@ def gen_user_frames(user_id):
     frame_count = 0
     start_time = time.time()
 
+    #print("Checkpoint c")
     while True:
         if user_id not in user_frames:
             continue
@@ -180,12 +184,25 @@ def gen_user_frames(user_id):
             if frame_count % 2 != 0:
                 continue
 
-            frame = detect_emotion_with_overlay(frame, emotion_history)
+            frame, emotion, timestamp = detect_emotion_with_overlay(frame, emotion_history)
             ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])  # Adjust quality (70 is a good balance)
             frame_bytes = buffer.tobytes()
+
+            #print("EMOTION HISTORY: ", emotion_history)
+
+            if emotion:  # Only log if emotion was detected
+                # IMPLEMENTATION OF SESSIONS NEEDED
+                #email = session.get("email", "anonymous") 
+                #room_id = session.get("room_id", "default")
+                # log_emotion(email, room_id, emotion, timestamp)
+                log_emotion(emotion, timestamp)
+                #print("Checkpoint a")
         
         if frame is None or frame.size == 0 or not ret:
             continue
+        #print("Checkpoint b")
+
+
 
         frame_count += 1
         # Calculate and log FPS every second
@@ -198,7 +215,7 @@ def gen_user_frames(user_id):
         yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
         
-        # time.sleep(0.033)  # ~60 FPS back to client
+        #time.sleep(0.010)  # ~60 FPS back to client
 
 
 if __name__ == "__main__":
