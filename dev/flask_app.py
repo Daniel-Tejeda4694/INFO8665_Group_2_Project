@@ -206,14 +206,14 @@ if __name__ == "__main__":
     port = int(os.getenv("FLASK_PORT"))
     debug = os.getenv("FLASK_DEBUG", "True").lower() == "true"
     
-    # Speech-to-text
+    # Speech-to-text (set volume_threshold as needed, e.g. 0.01)
     thread_stt = threading.Thread(
-        target=run_engine, 
-        kwargs={"is_default_english": True},
+        target=run_engine,
+        kwargs={"is_default_english": True, "v_th": 0.001},
         daemon=True)
     thread_stt.start()
-    
+
     app.run(debug=debug, host=host, port=port)
     # app.run(debug=True)
     #app.run(debug=True, host="0.0.0.0", port=5000)
-    #app.run(host="0.0.0.0", port=5000) 
+    #app.run(host="0.0.0.0", port=5000)
