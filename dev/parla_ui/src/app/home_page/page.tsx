@@ -33,7 +33,7 @@ export default function HomePage() {
       style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}
     >
       <ParlaLogo />
-      <GlassPanel className="flex flex-col items-center justify-center absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
+      <GlassPanel className="p-8 flex flex-col items-center justify-center absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
         <h1 className="text-3xl sm:text-4xl font-bold mb-8">
           Real-time voice and emotion translation system
         </h1>

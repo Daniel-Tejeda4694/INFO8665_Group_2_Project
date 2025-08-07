@@ -33,7 +33,7 @@ export default function Transcribe({
   if (!transcript) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 bg-black bg-opacity-80 text-white text-lg px-6 py-3 rounded-xl max-w-xl text-center">
+    <div className="bg-[#2B3E51]/70 bg-opacity-80 text-white text-lg px-6 py-3 rounded-xl max-w-xl text-center w-full">
       {userName}: {transcript}
     </div>
   );

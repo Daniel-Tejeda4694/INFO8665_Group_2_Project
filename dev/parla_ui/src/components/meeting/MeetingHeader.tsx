@@ -24,7 +24,7 @@ export default function MeetingHeader({ roomId }: Props) {
   };
 
   return (
-    <div className="flex items-center justify-between mb-4">
+    <div className="flex items-center justify-between mr-2">
       <div className="flex items-center space-x-2">
         <ParlaLogo />
       </div>
