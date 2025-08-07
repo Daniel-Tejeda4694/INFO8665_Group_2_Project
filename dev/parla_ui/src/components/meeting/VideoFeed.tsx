@@ -41,12 +41,11 @@ export default function VideoFeed({
   const imgRef = useRef<HTMLImageElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [myId, setMyId] = useState<string>("");
 
   const [streaming, setStreaming] = useState(false);
   const [video, setVideo] = useState(videoEnabled);
   const [audio, setAudio] = useState(audioEnabled);
-
-  const [myId, setMyId] = useState<string>("");
 
   // const handleStart = async () => {
   //   await fetch("/api/detection/start", { method: "POST" });
