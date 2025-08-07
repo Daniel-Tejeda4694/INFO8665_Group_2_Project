@@ -14,7 +14,7 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 LATEST_PATH = os.path.join(OUTPUT_DIR, "latest.txt")
 
 class WhisperRecognizer:
-    def __init__(self, isPipeline=False, default_model_size="base", lan="zh", select_default_model_size=True):
+    def __init__(self, isPipeline=False, default_model_size="base", lan="zh", select_default_model_size=True, volume_threshold=0.01):
         self.SAMPLE_RATE = 16000
         self.CHUNK_DURATION = 3
         self.CHUNK_SIZE = int(self.SAMPLE_RATE * self.CHUNK_DURATION)
@@ -22,6 +22,8 @@ class WhisperRecognizer:
         self.audio_q = queue.Queue(maxsize=40)
         self.lan = lan
         self.default_model_size = default_model_size
+        self.volume_threshold = volume_threshold  # Volume threshold for silence filtering
+
         if isPipeline: # For CI/CD
             self.model = whisper.load_model(self.default_model_size)
         elif select_default_model_size==True: # Select default model size
@@ -34,6 +36,21 @@ class WhisperRecognizer:
         self.running = True
         self.output_dir = OUTPUT_DIR
         self.output_tempfile = LATEST_PATH
+
+    def calculate_volume(self, audio_data):
+        """
+        Calculate the RMS (Root Mean Square) volume of audio data
+        Args:
+            audio_data: numpy array, audio data
+        Returns:
+            float: volume value (0.0 to 1.0)
+        """
+        if audio_data.dtype == np.int16:
+            audio_float = audio_data.astype(np.float32) / 32768.0
+        else:
+            audio_float = audio_data
+        rms = np.sqrt(np.mean(audio_float ** 2))
+        return rms
 
     def test_input_devices(self):
         for i, dev in enumerate(sd.query_devices()):
@@ -194,23 +211,26 @@ class WhisperRecognizer:
 
             if len(buffer) >= self.CHUNK_SIZE:
                 segment = buffer[:self.CHUNK_SIZE]
-                head = self.CHUNK_SIZE * (1 - self.OVERLAP)
+                head = int(self.CHUNK_SIZE * (1 - self.OVERLAP))
                 buffer = buffer[head:]
 
-                # Make transcribe 
-                audio = segment.astype(np.float32) / 32768.0
-                audio = audio.flatten()
-                result = self.model.transcribe(audio, fp16=False, language=self.lan)
-                new_text = result["text"]
-
-                print(">>", new_text)
-                self.transcripts.append(new_text)
-
-                # Save to output_tempfile
-                os.makedirs(self.output_dir, exist_ok=True)
-                latest_file = os.path.join(self.output_dir, self.output_tempfile)
-                with open(latest_file, "w", encoding="utf-8") as f:
-                    f.write(new_text)
+                # Calculate volume and filter silence
+                volume = self.calculate_volume(segment)
+                print(f">>Audio volume: {volume:.4f} (threshold: {self.volume_threshold})")
+                if volume > self.volume_threshold:
+                    audio = segment.astype(np.float32) / 32768.0
+                    audio = audio.flatten()
+                    result = self.model.transcribe(audio, fp16=False, language=self.lan)
+                    new_text = result["text"]
+                    print(">>", new_text)
+                    self.transcripts.append(new_text)
+                    # Save to output_tempfile
+                    os.makedirs(self.output_dir, exist_ok=True)
+                    latest_file = os.path.join(self.output_dir, self.output_tempfile)
+                    with open(latest_file, "w", encoding="utf-8") as f:
+                        f.write(new_text)
+                else:
+                    print(">>Audio volume too low, skipping transcription...")
                 sd.sleep(100)
 
         full_text = "\n".join(self.transcripts)
@@ -241,9 +261,12 @@ class WhisperRecognizer:
         thread_transcribe.join()
         print("All threads stopped.")
 
-def run_engine(is_default_english=True):
+def run_engine(is_default_english=True, v_th=0.01):
     """
     Language list supported by whisper could be found in https://github.com/openai/whisper/blob/main/whisper/tokenizer.py.
+    Args:
+        is_default_english: Whether to use English as default language
+        v_th: Volume threshold, audio below this value will be filtered (default: 0.01)
     """
     supported_langs = {
         "chinese": "zh",
@@ -264,7 +287,8 @@ def run_engine(is_default_english=True):
         else:
             lan_code = "en"
 
-    whiRecognizer = WhisperRecognizer(lan=lan_code)
+    whiRecognizer = WhisperRecognizer(lan=lan_code, volume_threshold=v_th)
+    print(f"Using volume threshold: {v_th}")
     whiRecognizer.streaming_mode()
     return
     # if user_input in supported_langs:
