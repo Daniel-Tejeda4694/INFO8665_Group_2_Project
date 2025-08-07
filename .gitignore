@@ -5,3 +5,5 @@ dev/speech_to_text/models/whisper/base.pt
 dev/mlflow_artifacts/
 
 dev/mlruns/
+
+dev/models/whisper/base.pt
