@@ -4,7 +4,7 @@ import GlassPanel from "@/components/ui/GlassPanel";
 import ParlaLogo from "@/components/home/ParlaLogo"; //  Import logo component
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   FaMicrophone,
   FaMicrophoneSlash,
@@ -17,6 +17,8 @@ import PrimaryButton from "@/components/ui/PrimaryButton";
 export default function MeetingPreview() {
   const webcamRef = useRef<Webcam | null>(null);
   const router = useRouter();
+  const search = useSearchParams();
+  const roomId = search?.get("room");
 
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
@@ -27,26 +29,39 @@ export default function MeetingPreview() {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [name, setName] = useState("");
 
-  useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      const audios = devices.filter((d) => d.kind === "audioinput");
-      const videos = devices.filter((d) => d.kind === "videoinput");
-      setAudioDevices(audios);
-      setVideoDevices(videos);
-      if (audios.length > 0) setSelectedAudio(audios[0].deviceId);
-      if (videos.length > 0) setSelectedVideo(videos[0].deviceId);
-    });
-  }, []);
+  // useEffect(() => {
+  //   navigator.mediaDevices.enumerateDevices().then((devices) => {
+  //     const audios = devices.filter((d) => d.kind === "audioinput");
+  //     const videos = devices.filter((d) => d.kind === "videoinput");
+  //     setAudioDevices(audios);
+  //     setVideoDevices(videos);
+  //     if (audios.length > 0) setSelectedAudio(audios[0].deviceId);
+  //     if (videos.length > 0) setSelectedVideo(videos[0].deviceId);
+  //   });
+  // }, []);
 
-  const handleJoin = () => {
-    const roomId = "parla"; // or pull from an API/create-room endpoint
-    router.push(`/meeting_page/${roomId}?name=${name}`);
-  };
+  useEffect(() => {
+    if (navigator.mediaDevices?.enumerateDevices) {
+      navigator.mediaDevices.enumerateDevices().then((devices) => {
+        const audios = devices.filter((d) => d.kind === "audioinput");
+        const videos = devices.filter((d) => d.kind === "videoinput");
+        setAudioDevices(audios);
+        setVideoDevices(videos);
+        if (audios.length > 0) setSelectedAudio(audios[0].deviceId);
+        if (videos.length > 0) setSelectedVideo(videos[0].deviceId);
+      });
+    } else {
+      console.warn("MediaDevices API not supported or running on server.");
+      console.log(navigator);
+      console.log(navigator.mediaDevices);
+      console.log(navigator.mediaDevices.enumerateDevices);
+    }
+  }, []);
 
   return (
     <main className="min-h-screen">
       <ParlaLogo />
-      <GlassPanel className="relative top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
+      <GlassPanel className="p-8 relative top-20 left-1/2 transform -translate-x-1/2 w-full max-w-7xl h-3/4">
         {/* Camera Preview */}
 
         <div className="flex flex-row flex-1 mt-15">
@@ -152,6 +167,7 @@ export default function MeetingPreview() {
                   value={selectedLanguage}
                   onChange={(e) => setSelectedLanguage(e.target.value)}
                 >
+                  <option value="en">English</option>
                   <option value="ml">Malayalam</option>
                   <option value="zh">Mandarin</option>
                   <option value="es">Spanish</option>
@@ -166,7 +182,17 @@ export default function MeetingPreview() {
               <PrimaryButton onClick={() => router.push("/")}>
                 Cancel
               </PrimaryButton>
-              <PrimaryButton onClick={handleJoin}>Join now</PrimaryButton>
+              <PrimaryButton
+                onClick={() =>
+                  router.push(
+                    `/meeting/${roomId}?name=${name}&lang=${selectedLanguage}&audio=${
+                      audioEnabled ? "1" : "0"
+                    }&video=${videoEnabled ? "1" : "0"}`
+                  )
+                }
+              >
+                Join now
+              </PrimaryButton>
             </div>
           </div>
         </div>
