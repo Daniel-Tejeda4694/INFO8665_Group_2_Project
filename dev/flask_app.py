@@ -145,7 +145,7 @@ def upload_frame():
     if user_id not in user_locks:
         user_locks[user_id] = threading.Lock()
     if user_id not in user_history:
-        user_history[user_id] = deque(maxlen=15)
+        user_history[user_id] = deque(maxlen=int(os.getenv("MAX_HISTORY", 10)))
 
     with user_locks[user_id]:
         user_frames[user_id] = frame
@@ -180,7 +180,7 @@ def gen_user_frames(user_id):
             if frame_count % 2 != 0:
                 continue
 
-            frame = detect_emotion_with_overlay(frame, emotion_history)
+            frame = detect_emotion_with_overlay(frame, user_history[user_id])
             ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])  # Adjust quality (70 is a good balance)
             frame_bytes = buffer.tobytes()
         

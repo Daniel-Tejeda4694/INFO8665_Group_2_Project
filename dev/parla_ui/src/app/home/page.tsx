@@ -16,12 +16,12 @@ export default function HomePage() {
 
   const handleNewMeeting = () => {
     const newRoomId = uuidv4();
-    router.push(`/setting_page?room=${newRoomId}`);
+    router.push(`/settings?room=${newRoomId}`);
   };
 
   const handleJoin = async () => {
     if (roomCode) {
-      router.push(`/setting_page?room=${roomCode}`);
+      router.push(`/settings?room=${roomCode}`);
     } else {
       setError("Invalid room code");
     }

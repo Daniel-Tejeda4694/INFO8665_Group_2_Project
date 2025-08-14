@@ -29,15 +29,33 @@ export default function MeetingPreview() {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [name, setName] = useState("");
 
+  // useEffect(() => {
+  //   navigator.mediaDevices.enumerateDevices().then((devices) => {
+  //     const audios = devices.filter((d) => d.kind === "audioinput");
+  //     const videos = devices.filter((d) => d.kind === "videoinput");
+  //     setAudioDevices(audios);
+  //     setVideoDevices(videos);
+  //     if (audios.length > 0) setSelectedAudio(audios[0].deviceId);
+  //     if (videos.length > 0) setSelectedVideo(videos[0].deviceId);
+  //   });
+  // }, []);
+
   useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      const audios = devices.filter((d) => d.kind === "audioinput");
-      const videos = devices.filter((d) => d.kind === "videoinput");
-      setAudioDevices(audios);
-      setVideoDevices(videos);
-      if (audios.length > 0) setSelectedAudio(audios[0].deviceId);
-      if (videos.length > 0) setSelectedVideo(videos[0].deviceId);
-    });
+    if (navigator.mediaDevices?.enumerateDevices) {
+      navigator.mediaDevices.enumerateDevices().then((devices) => {
+        const audios = devices.filter((d) => d.kind === "audioinput");
+        const videos = devices.filter((d) => d.kind === "videoinput");
+        setAudioDevices(audios);
+        setVideoDevices(videos);
+        if (audios.length > 0) setSelectedAudio(audios[0].deviceId);
+        if (videos.length > 0) setSelectedVideo(videos[0].deviceId);
+      });
+    } else {
+      console.warn("MediaDevices API not supported or running on server.");
+      console.log(navigator);
+      console.log(navigator.mediaDevices);
+      console.log(navigator.mediaDevices.enumerateDevices);
+    }
   }, []);
 
   return (
@@ -167,7 +185,7 @@ export default function MeetingPreview() {
               <PrimaryButton
                 onClick={() =>
                   router.push(
-                    `/meeting_page/${roomId}?name=${name}&lang=${selectedLanguage}&audio=${
+                    `/meeting/${roomId}?name=${name}&lang=${selectedLanguage}&audio=${
                       audioEnabled ? "1" : "0"
                     }&video=${videoEnabled ? "1" : "0"}`
                   )

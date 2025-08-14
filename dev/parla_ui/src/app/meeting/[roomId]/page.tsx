@@ -38,9 +38,11 @@ export default function MeetingPage() {
   useEffect(() => {
     if (!userName) return;
 
-    const s = io("http://localhost:3000", {
-      path: "/api/socket",
-    });
+    // const s = io("http://localhost:3000", {
+    //   path: "/api/socket",
+    // });
+
+    const s = io("http://10.187.85.37:3000/", { path: "/api/socket" });
 
     setSocket(s);
 

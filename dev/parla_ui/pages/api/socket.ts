@@ -11,7 +11,7 @@ type NextApiResponseWithSocket = NextApiResponse & {
   };
 };
 
-const roomParticipants: Record<string, Record<string, { streamURL: string; userName: string, audioEnabled: boolean, videoEnabled: boolean }>> = {};
+const roomParticipants: Record<string, Record<string, { streamURL: string; userName: string, userId: string, audioEnabled: boolean, videoEnabled: boolean }>> = {};
 
 export default function handler(req: NextApiRequest,
   res: NextApiResponseWithSocket) {
@@ -34,7 +34,16 @@ export default function handler(req: NextApiRequest,
       console.log(`Socket connected: ${socket.id}`)
       let currentRoom: string | null = null;
 
-      socket.on('join-room', ({ roomId, userName, streamURL, audioEnabled, videoEnabled }) => {
+      socket.on('emotion-update', ({ roomId, userId, emotion, bbox }) => {
+      // Broadcast to everyone else in the room except sender
+      socket.to(roomId).emit('emotion-update', {
+        userId,
+        label: emotion,
+        bbox
+      });
+    });
+
+      socket.on('join-room', ({ roomId, userName, userId, streamURL, audioEnabled, videoEnabled }) => {
         currentRoom = roomId;
         socket.join(roomId)
 
@@ -42,7 +51,7 @@ export default function handler(req: NextApiRequest,
         //   roomParticipants[roomId] = {};
         // }
         roomParticipants[roomId] = roomParticipants[roomId] || {};
-        roomParticipants[roomId][socket.id] = { streamURL, userName, audioEnabled, videoEnabled };
+        roomParticipants[roomId][socket.id] = { streamURL, userName, userId, audioEnabled, videoEnabled };
 
         // Send existing users to the new client
         const existingUsers = Object.entries(roomParticipants[roomId])
@@ -51,6 +60,7 @@ export default function handler(req: NextApiRequest,
             id,
             url: info.streamURL,
             name: info.userName,
+            userId: info.userId,
             audio: info.audioEnabled,
             video: info.videoEnabled
           }));
@@ -62,11 +72,13 @@ export default function handler(req: NextApiRequest,
           id: socket.id,
           url: streamURL,
           name: userName,
+          userId: userId,
           audio: audioEnabled,
           video: videoEnabled
         });
       });
       // })
+      
 
       socket.on("toggle-camera", ({ roomId, userId, video }) => {
         // if (roomParticipants[roomId] && roomParticipants[roomId][userId]) {

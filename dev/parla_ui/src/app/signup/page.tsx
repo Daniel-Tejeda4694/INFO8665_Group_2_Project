@@ -17,7 +17,7 @@ export default function SignupPage() {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      router.push("/home_page");
+      router.push("/home");
     } catch (error: any) {
       alert("Signup failed: " + error.message);
     }
@@ -54,14 +54,12 @@ export default function SignupPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <PrimaryButton> 
-                Sign&nbsp;Up
-            </PrimaryButton>
+            <PrimaryButton>Sign&nbsp;Up</PrimaryButton>
           </form>
           <p style={{ marginTop: "10px" }}>
             Already have an account?{" "}
             <a
-              href="/login_page"
+              href="/login"
               style={{ color: "#007bff", textDecoration: "underline" }}
             >
               Login

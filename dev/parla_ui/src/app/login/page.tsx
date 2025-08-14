@@ -22,7 +22,7 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (username === "admin" && password === "admin") {
-      router.push("/home_page");
+      router.push("/home");
     } else {
       alert("Invalid credentials");
     }
@@ -31,7 +31,7 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/home_page");
+      router.push("/home");
     } catch (error: unknown) {
       if (error instanceof Error) {
         alert("Login failed: " + error.message);
@@ -94,7 +94,7 @@ export default function LoginPage() {
             >
               Sign up
             </a> */}
-            <Link href="/signup_page" className="text-[#007bff] underline">
+            <Link href="/signup" className="text-[#007bff] underline">
               Sign up
             </Link>
           </p>
