@@ -5,6 +5,7 @@ import mediapipe as mp
 import tensorflow as tf
 from collections import Counter
 from PIL import Image
+from datetime import datetime, timezone
 
 # TFLite setup (same as before)
 interpreter = tf.lite.Interpreter(model_path="../training/fer_vggnet_float16_quantized.tflite")
@@ -46,6 +47,8 @@ def detect_emotion_with_overlay(frame, emotion_history):
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = detector.process(rgb)
 
+    detected_emotion = None
+
     if results.detections:
         for detection in results.detections:
             bbox = detection.location_data.relative_bounding_box
@@ -66,6 +69,7 @@ def detect_emotion_with_overlay(frame, emotion_history):
                 continue
 
             final_label = Counter(emotion_history).most_common(1)[0][0]
+            detected_emotion = final_label  # Capture detected emotion
 
             if SHOW_LABELS:
                 label_text = f"{final_label} ({conf * 100:.1f}%)"
